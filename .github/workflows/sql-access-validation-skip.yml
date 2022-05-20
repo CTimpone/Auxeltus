@@ -1,0 +1,18 @@
+name: AuxeltusSqlDataAccess - Build and Test - Bypass
+on:
+  pull_request:
+    paths-ignore:
+    - 'AuxeltusSqlDataAccess/**'
+    - 'AuxeltusSqlDataAccessTests/**'
+
+env:
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 6.0.x
+  WORKING_DIRECTORY: AuxeltusSqlDataAccess
+  TEST_DIRECTORY: AuxeltusSqlDataAccessTests
+  
+jobs:
+  sql-access-validation:
+    runs-on: windows-latest
+    steps:
+      - run: 'echo "This build is not required for modified files." '
