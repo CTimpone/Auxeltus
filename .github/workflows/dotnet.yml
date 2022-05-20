@@ -1,0 +1,30 @@
+name: AuxeltusSqlDataAccess - Build and Test
+on:
+  push:
+    branches:
+    - master
+env:
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 6.0.x
+  WORKING_DIRECTORY: AuxeltusSqlDataAccess
+  TEST_DIRECTORY: AuxeltusSqlDataAccessTests
+  
+jobs:
+  sql-access-validation:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Restore
+      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+    - name: Build
+      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: Restore Tests
+      run: dotnet restore "${{ env.TEST_DIRECTORY }}"
+    - name: Build Tests
+      run: dotnet build "${{ env.TEST_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: Test
+      run: dotnet test "${{ env.TEST_DIRECTORY }}" --no-build
