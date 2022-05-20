@@ -10,6 +10,10 @@ namespace Auxeltus.AccessLayer.Sql
         public string? Description { get; set; }
 
         public double? Salary { get; set; }
+
+        [Required]
+        public EmployeeType? EmployeeType { get; set; }
+
         public int? EmployeeId { get; set; }
 
         [Required]
