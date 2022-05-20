@@ -1,0 +1,31 @@
+name: Auxeltus - Full Publish
+on:
+  push:
+    branches:
+    - main
+
+env:
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 6.0.x
+  SQL_ACCESS_DIRECTORY: AuxeltusSqlDataAccess
+  SQL_ACCESS_TEST_DIRECTORY: AuxeltusSqlDataAccessTests
+  
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Restore
+      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+    - name: Build
+      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: Restore Tests
+      run: dotnet restore "${{ env.TEST_DIRECTORY }}"
+    - name: Build Tests
+      run: dotnet build "${{ env.TEST_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: Test
+      run: dotnet test "${{ env.TEST_DIRECTORY }}" --no-build
