@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Auxeltus.AccessLayer.Sql
@@ -37,7 +38,21 @@ namespace Auxeltus.AccessLayer.Sql
 
         public async Task<List<Job>> RetrieveJobsReportingTo(int employeeId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Job> reports = await _context.Jobs
+                    .AsNoTracking()
+                    .Where(job => job.ReportingEmployeeId == employeeId)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return reports;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveJob)}");
+                throw;
+            }
         }
     }
 }
