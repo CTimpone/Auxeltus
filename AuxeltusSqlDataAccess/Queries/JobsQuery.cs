@@ -54,5 +54,29 @@ namespace Auxeltus.AccessLayer.Sql
                 throw;
             }
         }
+        public async Task<List<Job>> RetrieveOpenJobs(int? maxReturns, int? startIndex)
+        {
+            maxReturns ??= 25;
+            startIndex ??= 0;
+
+            try
+            {
+                List<Job> reports = await _context.Jobs
+                    .AsNoTracking()
+                    .Where(job => job.EmployeeId == null && job.Id > startIndex)
+                    .OrderBy(job => job.Id)
+                    .Take(maxReturns.Value)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return reports;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveJob)}");
+                throw;
+            }
+        }
+
     }
 }
