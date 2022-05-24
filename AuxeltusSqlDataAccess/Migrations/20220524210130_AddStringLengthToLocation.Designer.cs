@@ -4,14 +4,16 @@ using Auxeltus.AccessLayer.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Auxeltus.AccessLayer.Sql.Migrations
 {
     [DbContext(typeof(AuxeltusSqlContext))]
-    partial class AuxeltusSqlContextModelSnapshot : ModelSnapshot
+    [Migration("20220524210130_AddStringLengthToLocation")]
+    partial class AddStringLengthToLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -2,7 +2,7 @@
 
 namespace AuxeltusSqlDataAccessTests
 {
-    public class Class1
+    public class RoleCommandTests
     {
     }
 }
