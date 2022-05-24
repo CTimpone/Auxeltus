@@ -27,5 +27,27 @@ namespace Auxeltus.AccessLayer.Sql
 
         public int? LocationId { get; set; }
         public Location? Location { get; set; }
+
+        public void Mutate(Job otherJob)
+        {
+            Description = otherJob.Description ?? Description;
+            Salary = otherJob.Salary ?? Salary;
+            EmployeeType = otherJob.EmployeeType ?? EmployeeType;
+            EmployeeId = otherJob.EmployeeId ?? EmployeeId;
+            ReportingEmployeeId = otherJob.ReportingEmployeeId ?? ReportingEmployeeId;
+
+            if (otherJob.Remote == true)
+            {
+                Location = null;
+                LocationId = null;
+                Remote = true;
+            } else if (otherJob.LocationId != null)
+            {
+                Location = otherJob.Location;
+                LocationId = otherJob.LocationId;
+
+                Remote = otherJob.Remote;
+            } 
+        }
     }
 }
