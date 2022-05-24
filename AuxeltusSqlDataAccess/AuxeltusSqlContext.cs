@@ -25,8 +25,8 @@ namespace Auxeltus.AccessLayer.Sql
         {
             modelBuilder.Entity<Location>()
                 .HasMany(loc => loc.Jobs)
-                .WithOne(job => job.Location)
-                .HasForeignKey(job => job.LocationId);
+                .WithOne(job => job.Location!)
+                .HasForeignKey(job => job.LocationId!);
 
             modelBuilder.Entity<Role>()
                 .HasMany(rol => rol.Jobs)
