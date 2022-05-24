@@ -21,5 +21,14 @@ namespace Auxeltus.AccessLayer.Sql
         public int? MaximumSalary { get; set; }
 
         public List<Job>? Jobs { get; set; }
+
+        internal void Mutate(Role updatedRole)
+        {
+            Title = updatedRole.Title ?? Title;
+            Tier = updatedRole.Tier ?? Tier;
+            MinimumSalary = updatedRole.MinimumSalary ?? MinimumSalary;
+            MaximumSalary = updatedRole.MaximumSalary ?? MaximumSalary;
+
+        }
     }
 }
