@@ -6,7 +6,7 @@ AuxeltusSqlDataAccess is a .NetStandard 2.1 project that utilizes the latest sup
 
 Ensure that you've properly updated AuxeltusSqlContext with the requisite changes that require a new migration, then use the following CLI command (once in AuxeltusSqlDataAccess directory).
 
-**dotnet ef migrations add NAME_OF_MIGRATION_HERE --startup-project --startup-project ../AuxeltusSqlDataAccessTests**
+**dotnet ef migrations add NAME_OF_MIGRATION_HERE --startup-project ../AuxeltusSqlDataAccessTests**
 
 The above command leverages the unit testing project (AueltusSqlDataAccessTests) to generate a migration, that would not be possible with a .NetStandard project alone.
 

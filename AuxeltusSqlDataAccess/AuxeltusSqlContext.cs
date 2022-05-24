@@ -26,6 +26,10 @@ namespace Auxeltus.AccessLayer.Sql
                 .HasMany(rol => rol.Jobs)
                 .WithOne(job => job.Role)
                 .HasForeignKey(job => job.RoleId);
+
+            modelBuilder.Entity<Job>()
+                .HasCheckConstraint("CK_EmployeeHasSalary", "([EmployeeId] IS NULL AND [Salary] IS NULL) OR ([EmployeeId] IS NOT NULL AND [Salary] IS NOT NULL)")
+                .HasCheckConstraint("CK_EmployeeLocationSanity", "[LocationId] IS NOT NULL OR [Remote] = 1");
         }
 
     }

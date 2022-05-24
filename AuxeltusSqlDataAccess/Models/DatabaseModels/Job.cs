@@ -19,10 +19,13 @@ namespace Auxeltus.AccessLayer.Sql
         [Required]
         public int? ReportingEmployeeId { get; set; }
 
+        [Required]
         public int RoleId { get; set; }
         public Role Role { get; set; }
 
-        public int LocationId { get; set; }
-        public Location Location { get; set; }
+        public bool? Remote { get; set; }
+
+        public int? LocationId { get; set; }
+        public Location? Location { get; set; }
     }
 }
