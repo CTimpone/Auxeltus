@@ -17,6 +17,8 @@ namespace Auxeltus.AccessLayer.Sql
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("Auxeltus_SQLConnectionString"));
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +35,11 @@ namespace Auxeltus.AccessLayer.Sql
 
             modelBuilder.Entity<Job>()
                 .HasCheckConstraint("CK_EmployeeHasSalary", "([EmployeeId] IS NULL AND [Salary] IS NULL) OR ([EmployeeId] IS NOT NULL AND [Salary] IS NOT NULL)")
-                .HasCheckConstraint("CK_EmployeeLocationSanity", "[LocationId] IS NOT NULL OR [Remote] = 1");
+                .HasCheckConstraint("CK_EmployeeLocationSanity", "[LocationId] IS NOT NULL OR [Remote] = 1")
+                .Property(x => x.Archived)
+                .HasDefaultValue(false);
+
+            base.OnModelCreating(modelBuilder);
         }
 
     }

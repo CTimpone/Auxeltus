@@ -7,6 +7,7 @@ namespace Auxeltus.AccessLayer.Sql
         public int Id { get; set; }
 
         [Required]
+        [StringLength(2000)]
         public string? Description { get; set; }
 
         public double? Salary { get; set; }
@@ -18,6 +19,9 @@ namespace Auxeltus.AccessLayer.Sql
 
         [Required]
         public int? ReportingEmployeeId { get; set; }
+
+        [Required]
+        public bool? Archived { get; set; }
 
         [Required]
         public int RoleId { get; set; }
@@ -35,6 +39,7 @@ namespace Auxeltus.AccessLayer.Sql
             EmployeeType = otherJob.EmployeeType ?? EmployeeType;
             EmployeeId = otherJob.EmployeeId ?? EmployeeId;
             ReportingEmployeeId = otherJob.ReportingEmployeeId ?? ReportingEmployeeId;
+            Archived = otherJob.Archived ?? Archived;
 
             if (otherJob.Remote == true)
             {

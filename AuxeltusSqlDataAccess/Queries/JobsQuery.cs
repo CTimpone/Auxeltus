@@ -42,7 +42,7 @@ namespace Auxeltus.AccessLayer.Sql
             {
                 List<Job> reports = await _context.Jobs
                     .AsNoTracking()
-                    .Where(job => job.ReportingEmployeeId == employeeId)
+                    .Where(job => job.ReportingEmployeeId == employeeId && job.Archived != true)
                     .ToListAsync()
                     .ConfigureAwait(false);
 
@@ -63,7 +63,7 @@ namespace Auxeltus.AccessLayer.Sql
             {
                 List<Job> reports = await _context.Jobs
                     .AsNoTracking()
-                    .Where(job => job.EmployeeId == null && job.Id > startIndex)
+                    .Where(job => job.EmployeeId == null && job.Id > startIndex && job.Archived != true)
                     .OrderBy(job => job.Id)
                     .Take(maxReturns.Value)
                     .ToListAsync()
