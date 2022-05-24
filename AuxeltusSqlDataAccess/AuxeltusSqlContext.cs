@@ -5,6 +5,10 @@ namespace Auxeltus.AccessLayer.Sql
 {
     public class AuxeltusSqlContext : DbContext
     {
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Role> Roles { get; set; }
+
         public AuxeltusSqlContext()
         {
 

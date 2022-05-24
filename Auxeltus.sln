@@ -3,12 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuxeltusSqlDataAccess", "AuxeltusSqlDataAccess\AuxeltusSqlDataAccess.csproj", "{0CB56813-9B15-4286-92F9-5F16685CC5E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuxeltusSqlDataAccess", "AuxeltusSqlDataAccess\AuxeltusSqlDataAccess.csproj", "{0CB56813-9B15-4286-92F9-5F16685CC5E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuxeltusSqlDataAccessTests", "AuxeltusSqlDataAccessTests\AuxeltusSqlDataAccessTests.csproj", "{991CCDCA-5FF6-4E1E-982E-2343234514B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuxeltusSqlDataAccessTests", "AuxeltusSqlDataAccessTests\AuxeltusSqlDataAccessTests.csproj", "{991CCDCA-5FF6-4E1E-982E-2343234514B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED804402-EC03-437B-A80E-DE3CC2D5EBC5}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
