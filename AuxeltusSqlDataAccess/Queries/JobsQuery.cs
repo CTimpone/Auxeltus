@@ -18,7 +18,7 @@ namespace Auxeltus.AccessLayer.Sql
             _context = context;
         }
 
-        public async Task<Job> RetrieveJob(int jobId)
+        public async Task<Job> RetrieveJobAsync(int jobId)
         {
             try
             {
@@ -31,12 +31,12 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveJob)}");
+                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveJobAsync)}");
                 throw;
             }
         }
 
-        public async Task<List<Job>> RetrieveJobsReportingTo(int employeeId)
+        public async Task<List<Job>> RetrieveJobsReportingToAsync(int employeeId)
         {
             try
             {
@@ -50,11 +50,11 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveJob)}");
+                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveJobsReportingToAsync)}");
                 throw;
             }
         }
-        public async Task<List<Job>> RetrieveOpenJobs(int? maxReturns, int? startIndex)
+        public async Task<List<Job>> RetrieveOpenJobsAsync(int? maxReturns, int? startIndex)
         {
             maxReturns ??= 25;
             startIndex ??= 0;
@@ -73,7 +73,7 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveJob)}");
+                _logger.LogError(ex, $"Exception thrown in {nameof(JobsQuery)}.{nameof(RetrieveOpenJobsAsync)}");
                 throw;
             }
         }
