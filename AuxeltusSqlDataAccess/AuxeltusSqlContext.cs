@@ -9,7 +9,7 @@ namespace Auxeltus.AccessLayer.Sql
         public DbSet<Location> Locations { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-        public AuxeltusSqlContext()
+        public AuxeltusSqlContext(DbContextOptions<AuxeltusSqlContext> options) : base(options)
         {
 
         }
