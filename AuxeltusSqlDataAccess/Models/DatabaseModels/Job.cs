@@ -32,7 +32,7 @@ namespace Auxeltus.AccessLayer.Sql
         public int? LocationId { get; set; }
         public Location? Location { get; set; }
 
-        public void Mutate(Job otherJob)
+        internal void Mutate(Job otherJob)
         {
             Description = otherJob.Description ?? Description;
             Salary = otherJob.Salary ?? Salary;
