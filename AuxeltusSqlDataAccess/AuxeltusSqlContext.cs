@@ -24,6 +24,12 @@ namespace Auxeltus.AccessLayer.Sql
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Location>()
+                .HasIndex(prop => prop.Name)
+                .IsUnique();
+            modelBuilder.Entity<Location>()
+                .HasIndex(prop => new { prop.Latitude, prop.Longitude })
+                .IsUnique();
+            modelBuilder.Entity<Location>()
                 .HasMany(loc => loc.Jobs)
                 .WithOne(job => job.Location!)
                 .HasForeignKey(job => job.LocationId!);
@@ -32,11 +38,14 @@ namespace Auxeltus.AccessLayer.Sql
                 .HasMany(rol => rol.Jobs)
                 .WithOne(job => job.Role)
                 .HasForeignKey(job => job.RoleId);
+            modelBuilder.Entity<Role>()
+                .HasIndex(prop => prop.Title)
+                .IsUnique();
 
             modelBuilder.Entity<Job>()
                 .HasCheckConstraint("CK_EmployeeHasSalary", "([EmployeeId] IS NULL AND [Salary] IS NULL) OR ([EmployeeId] IS NOT NULL AND [Salary] IS NOT NULL)")
                 .HasCheckConstraint("CK_EmployeeLocationSanity", "[LocationId] IS NOT NULL OR [Remote] = 1")
-                .Property(x => x.Archived)
+                .Property(prop => prop.Archived)
                 .HasDefaultValue(false);
 
             base.OnModelCreating(modelBuilder);
