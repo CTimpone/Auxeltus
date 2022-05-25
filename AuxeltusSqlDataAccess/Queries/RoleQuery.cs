@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Auxeltus.AccessLayer.Sql
 {
+    /// <summary>
+    /// Class <c>RoleQuery</c> allows for the retrieval of <c>Role</c>s from the Auxeltus SQL data model.
+    /// It utilizes asynchronous EF Core methodology to retrieve <c>Role</c>s from the SQL database.
+    /// </summary>
     public class RoleQuery : IRoleQuery
     {
         private readonly ILogger _logger;
@@ -18,6 +22,11 @@ namespace Auxeltus.AccessLayer.Sql
             _context = context;
         }
 
+        /// <summary>
+        /// It utilizes asynchronous EF Core methodology to retrieve <c>Role</c>s from the SQL database.
+        /// Only returns a subset (default of 256) of the records, based on the <c>maxReturns</c> parameter.
+        /// The <c>startIndex</c> parameter can be used to facilitate paging.
+        /// </summary>
         public async Task<List<Role>> RetrieveRolesAsync(int? maxReturns, int? startIndex)
         {
             maxReturns ??= 256;

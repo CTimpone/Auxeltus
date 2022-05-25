@@ -42,7 +42,6 @@ namespace Auxeltus.AccessLayer.Sql
         /// <summary>
         /// Modify the relevant underlying values on <c>Location</c> parameters to facilitate EF Core updates.
         /// </summary>
-
         internal void Mutate(Location updatedLocation)
         {
             Name = updatedLocation.Name ?? Name;
