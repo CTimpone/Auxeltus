@@ -31,6 +31,8 @@ namespace Auxeltus.AccessLayer.Sql
             {
                 Job foundJob = await _context.Jobs
                     .AsNoTracking()
+                    .Include(job => job.Role)
+                    .Include(job => job.Location)
                     .FirstAsync(job => job.Id == jobId)
                     .ConfigureAwait(false);
 
@@ -52,6 +54,8 @@ namespace Auxeltus.AccessLayer.Sql
             {
                 List<Job> reports = await _context.Jobs
                     .AsNoTracking()
+                    .Include(job => job.Role)
+                    .Include(job => job.Location)
                     .Where(job => job.ReportingEmployeeId == employeeId && job.Archived != true)
                     .ToListAsync()
                     .ConfigureAwait(false);
@@ -80,6 +84,8 @@ namespace Auxeltus.AccessLayer.Sql
             {
                 List<Job> reports = await _context.Jobs
                     .AsNoTracking()
+                    .Include(job => job.Role)
+                    .Include(job => job.Location)
                     .Where(job => job.EmployeeId == null && job.Id > startIndex && job.Archived != true)
                     .OrderBy(job => job.Id)
                     .Take(maxReturns.Value)
