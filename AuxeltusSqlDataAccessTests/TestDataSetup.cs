@@ -19,6 +19,11 @@ namespace AuxeltusSqlDataAccessTests
 
             AuxeltusSqlContext context = new AuxeltusSqlContext(options);
 
+            context.Database.OpenConnection();
+
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
             AddLocationsToContext(context);
             AddRolesToContext(context);
             AddJobsToContext(context);
