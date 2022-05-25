@@ -9,16 +9,21 @@ namespace Auxeltus.AccessLayer.Sql
         public DbSet<Location> Locations { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-        public AuxeltusSqlContext(DbContextOptions<AuxeltusSqlContext> options) : base(options)
-        {
-
+        public AuxeltusSqlContext()
+        { 
+        
         }
+
+        public AuxeltusSqlContext(DbContextOptions<AuxeltusSqlContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("Auxeltus_SQLConnectionString"));
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("Auxeltus_SQLConnectionString"));
 
-            base.OnConfiguring(optionsBuilder);
+                base.OnConfiguring(optionsBuilder);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

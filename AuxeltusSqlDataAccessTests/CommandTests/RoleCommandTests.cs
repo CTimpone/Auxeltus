@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AuxeltusSqlDataAccessTests
+namespace AuxeltusSqlDataAccessTests.CommandTests
 {
     public class RoleCommandTests
     {
