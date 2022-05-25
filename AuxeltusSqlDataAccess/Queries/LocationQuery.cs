@@ -36,7 +36,7 @@ namespace Auxeltus.AccessLayer.Sql
             {
                 List<Location> locations = await _context.Locations
                     .AsNoTracking()
-                    .Where(location => location.Id > startIndex)
+                    .Where(location => location.Id >= startIndex)
                     .OrderBy(location => location.Id)
                     .Take(maxReturns.Value)
                     .ToListAsync()

@@ -7,11 +7,11 @@ namespace AuxeltusSqlDataAccessTests
 {
     internal static class TestDataSetup
     {
-        public static List<Location> locations;
-        public static List<Role> roles;
-        public static List<Job> jobs;
+        public static List<Location> Locations;
+        public static List<Role> Roles;
+        public static List<Job> Jobs;
 
-        public static AuxeltusSqlContext GenerateTestDataContext()
+        public static AuxeltusSqlContext GenerateTestDataContext(bool setupData = true)
         {
             DbContextOptions<AuxeltusSqlContext> options = new DbContextOptionsBuilder<AuxeltusSqlContext>()
                 .UseSqlite("DataSource=:memory:")
@@ -24,16 +24,19 @@ namespace AuxeltusSqlDataAccessTests
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            AddLocationsToContext(context);
-            AddRolesToContext(context);
-            AddJobsToContext(context);
+            if (setupData)
+            {
+                AddLocationsToContext(context);
+                AddRolesToContext(context);
+                AddJobsToContext(context);
+            }
 
             return context;
         }
 
         private static void AddLocationsToContext(AuxeltusSqlContext context)
         {
-            locations = new List<Location>
+            TestDataSetup.Locations = new List<Location>
             {
                 new Location
                 {
@@ -66,15 +69,15 @@ namespace AuxeltusSqlDataAccessTests
                     Longitude = 17
                 }
             };
-            context.Locations.AddRange(locations);
+            context.Locations.AddRange(Locations);
             context.SaveChanges();
 
-            locations = context.Locations.AsNoTracking().ToListAsync().GetAwaiter().GetResult();
+            TestDataSetup.Locations = context.Locations.ToListAsync().GetAwaiter().GetResult();
         }
 
         private static void AddRolesToContext(AuxeltusSqlContext context)
         {
-            roles = new List<Role>
+            TestDataSetup.Roles = new List<Role>
             {
                 new Role
                 {
@@ -134,15 +137,15 @@ namespace AuxeltusSqlDataAccessTests
                 }
             };
 
-            context.Roles.AddRange(roles);
+            context.Roles.AddRange(Roles);
             context.SaveChanges();
 
-            roles = context.Roles.AsNoTracking().ToListAsync().GetAwaiter().GetResult();
+            TestDataSetup.Roles = context.Roles.ToListAsync().GetAwaiter().GetResult();
         }
 
         private static void AddJobsToContext(AuxeltusSqlContext context)
         {
-            jobs = new List<Job>
+            TestDataSetup.Jobs = new List<Job>
             {
                 new Job
                 {
@@ -154,8 +157,8 @@ namespace AuxeltusSqlDataAccessTests
                     Salary = 85000,
                     SalaryType = SalaryType.Annual,
                     Archived = false,
-                    LocationId = locations.First().Id,
-                    RoleId = roles[3].Id
+                    LocationId = Locations.First().Id,
+                    RoleId = Roles[3].Id
                 },
                 new Job
                 {
@@ -166,8 +169,8 @@ namespace AuxeltusSqlDataAccessTests
                     Remote = false,
                     Salary = null,
                     Archived = false,
-                    LocationId = locations.Last().Id,
-                    RoleId = roles.First().Id
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles.First().Id
                 },
                 new Job
                 {
@@ -179,8 +182,8 @@ namespace AuxeltusSqlDataAccessTests
                     Salary = 84000,
                     SalaryType = SalaryType.Annual,
                     Archived = false,
-                    LocationId = locations.Last().Id,
-                    RoleId = roles[1].Id
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles[1].Id
                 },
                 new Job
                 {
@@ -192,8 +195,8 @@ namespace AuxeltusSqlDataAccessTests
                     Salary = 100000,
                     SalaryType = SalaryType.Annual,
                     Archived = false,
-                    LocationId = locations.Last().Id,
-                    RoleId = roles[5].Id
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles[5].Id
                 },
                 new Job
                 {
@@ -205,8 +208,8 @@ namespace AuxeltusSqlDataAccessTests
                     Salary = 130000,
                     SalaryType = SalaryType.Annual,
                     Archived = false,
-                    LocationId = locations.Last().Id,
-                    RoleId = roles[5].Id
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles[5].Id
                 },
                 new Job
                 {
@@ -218,8 +221,8 @@ namespace AuxeltusSqlDataAccessTests
                     Remote = false,
                     Salary = 400000,
                     Archived = false,
-                    LocationId = locations.Last().Id,
-                    RoleId = roles[5].Id
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles[5].Id
                 },
                 new Job
                 {
@@ -231,17 +234,15 @@ namespace AuxeltusSqlDataAccessTests
                     Remote = false,
                     Salary = 95,
                     Archived = false,
-                    LocationId = locations.Last().Id,
-                    RoleId = roles[2].Id
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles[2].Id
                 }
             };
 
-            context.Jobs.AddRange(jobs);
+            context.Jobs.AddRange(Jobs);
             context.SaveChanges();
 
-            jobs = context.Jobs.AsNoTracking().ToListAsync().GetAwaiter().GetResult();
-
+            TestDataSetup.Jobs = context.Jobs.ToListAsync().GetAwaiter().GetResult();
         }
-
     }
 }

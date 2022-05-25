@@ -86,7 +86,7 @@ namespace Auxeltus.AccessLayer.Sql
                     .AsNoTracking()
                     .Include(job => job.Role)
                     .Include(job => job.Location)
-                    .Where(job => job.EmployeeId == null && job.Id > startIndex && job.Archived != true)
+                    .Where(job => job.EmployeeId == null && job.Id >= startIndex && job.Archived != true)
                     .OrderBy(job => job.Id)
                     .Take(maxReturns.Value)
                     .ToListAsync()
