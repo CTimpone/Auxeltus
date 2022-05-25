@@ -4,21 +4,44 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Auxeltus.AccessLayer.Sql
 {
+    /// <summary>
+    /// Class <c>Location</c> is a representation of a position somewhere on Earth.
+    /// It serves as an EF Core model for the purposes of the Auxeltus data structure.
+    /// </summary>
     public class Location
     {
         public int Id { get; set; }
 
+        /// <summary>
+        /// The identifying name for the <c>Location</c>.
+        /// </summary>
         [Required]
         [StringLength(100)]
         public string? Name { get; set; }
 
+        /// <summary>
+        /// The Latitude coordinate for the <c>Location</c>.
+        /// It should include the full value (degree, minutes, seconds, etc), as there are no other fields for more granular coordinate population.
+        /// </summary>
         [Required]
         public double? Latitude { get; set; }
 
+        /// <summary>
+        /// The Longitude coordinate for the <c>Location</c>.
+        /// It should include the full value (degree, minutes, seconds, etc), as there are no other fields for more granular coordinate population.
+        /// </summary>
         [Required]
         public double? Longitude { get; set; }
 
+        /// <summary>
+        /// The full list of <c>Job</c>s that are located at the <c>Location</c>.
+        /// Relates to the EF Core data model, in which a <c>Job</c> may have a foreign key pointing to a <c>Location</c>.
+        /// </summary>
         public List<Job>? Jobs { get; set; }
+
+        /// <summary>
+        /// Modify the relevant underlying values on <c>Location</c> parameters to facilitate EF Core updates.
+        /// </summary>
 
         internal void Mutate(Location updatedLocation)
         {
@@ -27,6 +50,10 @@ namespace Auxeltus.AccessLayer.Sql
             Longitude = updatedLocation.Longitude ?? Longitude;
         }
 
+        /// <summary>
+        /// The <c>DistanceBetween</c> method calculates the distance between two location objects, returning the value in kilometers.
+        /// In the event that one or more coordinates is not populated in the locations, an <c>ArgumentException</c> will be thrown.
+        /// </summary>
         public double DistanceBetween(Location otherLocation)
         {
             if (Latitude == null || Longitude == null || otherLocation.Latitude == null || otherLocation.Longitude == null)
