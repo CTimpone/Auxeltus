@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Auxeltus.AccessLayer.Sql
 {
+    /// <summary>
+    /// Class <c>JobsCommand</c> allows for the modification of the Auxeltus SQL data model, specifically with regards to <c>Job</c>.
+    /// It utilizes asynchronous EF Core methodology to add, update, and delete items from the SQL database.
+    /// </summary>
     public class JobsCommand : IJobsCommand
     {
         private readonly ILogger _logger;
@@ -17,6 +21,10 @@ namespace Auxeltus.AccessLayer.Sql
             _context = context;
         }
 
+        /// <summary>
+        /// Adds a new <c>Job</c> to the data structure.
+        /// Input object should not include an Id (as it is auto-generated as the primary key).
+        /// </summary>
         public async Task CreateJobAsync(Job job)
         {
             try
@@ -35,6 +43,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
         }
 
+        /// <summary>
+        /// Updates an existing <c>Job</c> on the data structure.
+        /// </summary>
         public async Task UpdateJobAsync(int jobId, Job updatedJob)
         {
             try
@@ -55,6 +66,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
         }
 
+        /// <summary>
+        /// Deletes an existing <c>Location</c> on the data structure.
+        /// </summary>
         public async Task DeleteJobAsync(int jobId)
         {
             try

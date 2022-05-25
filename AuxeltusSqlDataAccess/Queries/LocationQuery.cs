@@ -23,7 +23,6 @@ namespace Auxeltus.AccessLayer.Sql
         }
 
         /// <summary>
-        /// Retrieves 
         /// It utilizes asynchronous EF Core methodology to retrieve <c>Location</c>s from the SQL database.
         /// Only returns a subset (default of 256) of the records, based on the <c>maxReturns</c> parameter.
         /// The <c>startIndex</c> parameter can be used to facilitate paging.
