@@ -21,6 +21,8 @@ namespace Auxeltus.AccessLayer.Sql
 
         public double? Salary { get; set; }
 
+        public SalaryType? SalaryType { get; set; }
+
         [Required]
         public EmployeeType? EmployeeType { get; set; }
 
