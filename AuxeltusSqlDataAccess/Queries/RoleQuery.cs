@@ -36,7 +36,7 @@ namespace Auxeltus.AccessLayer.Sql
             {
                 List<Role> roles = await _context.Roles
                     .AsNoTracking()
-                    .Where(role => role.Id > startIndex)
+                    .Where(role => role.Id >= startIndex)
                     .OrderBy(job => job.Id)
                     .Take(maxReturns.Value)
                     .ToListAsync()
