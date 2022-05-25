@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Auxeltus.AccessLayer.Sql
 {
+    /// <summary>
+    /// Class <c>RoleCommand</c> allows for the modification of the Auxeltus SQL data model, specifically with regards to <c>Role</c>.
+    /// It utilizes asynchronous EF Core methodology to add, update, and delete items from the SQL database.
+    /// </summary>
     public class RoleCommand : IRoleCommand
     {
         private readonly ILogger _logger;
@@ -16,6 +20,10 @@ namespace Auxeltus.AccessLayer.Sql
             _context = context;
         }
 
+        /// <summary>
+        /// Adds a new <c>Role</c> to the data structure.
+        /// Input object should not include an Id (as it is auto-generated as the primary key).
+        /// </summary>
         public async Task CreateRoleAsync(Role role)
         {
             try
@@ -34,6 +42,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
         }
 
+        /// <summary>
+        /// Updates an existing <c>Role</c> on the data structure.
+        /// </summary>
         public async Task UpdateRoleAsync(int roleId, Role updatedRole)
         {
             try
@@ -54,6 +65,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
         }
 
+        /// <summary>
+        /// Deletes an existing <c>Role</c> on the data structure.
+        /// </summary>
         public async Task DeleteRoleAsync(int roleId)
         {
             try
