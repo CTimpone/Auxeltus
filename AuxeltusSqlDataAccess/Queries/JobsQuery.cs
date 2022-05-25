@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Auxeltus.AccessLayer.Sql
 {
+    /// <summary>
+    /// Class <c>JobsQuery</c> allows for the retrieval of <c>Job</c>s from the Auxeltus SQL data model.
+    /// It utilizes asynchronous EF Core methodology to retrieve <c>Job</c>s from the SQL database.
+    /// </summary>
     public class JobsQuery : IJobsQuery
     {
         private readonly ILogger _logger;
@@ -18,6 +22,9 @@ namespace Auxeltus.AccessLayer.Sql
             _context = context;
         }
 
+        /// <summary>
+        /// It utilizes asynchronous EF Core methodology to retrieve a <c>Job</c>s from the SQL database using the primary key.
+        /// </summary>
         public async Task<Job> RetrieveJobAsync(int jobId)
         {
             try
@@ -36,6 +43,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
         }
 
+        /// <summary>
+        /// Retrieves all <c>Job</c>s that report to a specific employee.
+        /// </summary>
         public async Task<List<Job>> RetrieveJobsReportingToAsync(int employeeId)
         {
             try
@@ -54,6 +64,13 @@ namespace Auxeltus.AccessLayer.Sql
                 throw;
             }
         }
+
+        /// <summary>
+        /// It utilizes asynchronous EF Core methodology to retrieve <c>Job</c>s from the SQL database.
+        /// Will only return <c>Job</c>s without a corresponding <c>Employee</c> that are not archived.
+        /// Only returns a subset (default of 25) of found <c>Job</c>s, based on the <c>maxReturns</c> parameter.
+        /// The <c>startIndex</c> parameter can be used to facilitate paging.
+        /// </summary>
         public async Task<List<Job>> RetrieveOpenJobsAsync(int? maxReturns, int? startIndex)
         {
             maxReturns ??= 25;
