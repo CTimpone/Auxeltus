@@ -36,7 +36,7 @@ namespace AuxeltusSqlDataAccessTests
 
         private static void AddLocationsToContext(AuxeltusSqlContext context)
         {
-            TestDataSetup.Locations = new List<Location>
+            Locations = new List<Location>
             {
                 new Location
                 {
@@ -72,12 +72,12 @@ namespace AuxeltusSqlDataAccessTests
             context.Locations.AddRange(Locations);
             context.SaveChanges();
 
-            TestDataSetup.Locations = context.Locations.ToListAsync().GetAwaiter().GetResult();
+            Locations = context.Locations.ToListAsync().GetAwaiter().GetResult();
         }
 
         private static void AddRolesToContext(AuxeltusSqlContext context)
         {
-            TestDataSetup.Roles = new List<Role>
+            Roles = new List<Role>
             {
                 new Role
                 {
@@ -140,12 +140,12 @@ namespace AuxeltusSqlDataAccessTests
             context.Roles.AddRange(Roles);
             context.SaveChanges();
 
-            TestDataSetup.Roles = context.Roles.ToListAsync().GetAwaiter().GetResult();
+            Roles = context.Roles.ToListAsync().GetAwaiter().GetResult();
         }
 
         private static void AddJobsToContext(AuxeltusSqlContext context)
         {
-            TestDataSetup.Jobs = new List<Job>
+            Jobs = new List<Job>
             {
                 new Job
                 {
@@ -191,11 +191,11 @@ namespace AuxeltusSqlDataAccessTests
                     EmployeeId = 3,
                     ReportingEmployeeId = 5,
                     EmployeeType = EmployeeType.FullTime,
-                    Remote = false,
+                    Remote = true,
                     Salary = 100000,
                     SalaryType = SalaryType.Annual,
                     Archived = false,
-                    LocationId = Locations.Last().Id,
+                    LocationId = null,
                     RoleId = Roles[5].Id
                 },
                 new Job
@@ -236,13 +236,30 @@ namespace AuxeltusSqlDataAccessTests
                     Archived = false,
                     LocationId = Locations.Last().Id,
                     RoleId = Roles[2].Id
+                },
+                new Job
+                {
+                    Description = "Unfilled remote.",
+                    EmployeeId = null,
+                    ReportingEmployeeId = 5,
+                    EmployeeType = EmployeeType.FullTime,
+                    SalaryType = SalaryType.Annual,
+                    Remote = true,
+                    Salary = null,
+                    Archived = false,
+                    LocationId = null,
+                    RoleId = Roles[1].Id
                 }
+
             };
 
             context.Jobs.AddRange(Jobs);
             context.SaveChanges();
 
-            TestDataSetup.Jobs = context.Jobs.ToListAsync().GetAwaiter().GetResult();
+            Jobs = context.Jobs
+                .Include(j => j.Location)
+                .Include(j => j.Role)
+                .ToList();
         }
     }
 }
