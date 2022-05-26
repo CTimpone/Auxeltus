@@ -33,7 +33,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
-        public async Task RetrieveRolesAsync_Success_GetAll()
+        public async Task RetrieveRolesAsync_GetAll()
         {
             List<Role> roles = await query.RetrieveRolesAsync(100, 0);
 
@@ -50,7 +50,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
-        public async Task RetrieveRolesAsync_Success_GetSubset_UpToMaxReturns()
+        public async Task RetrieveRolesAsync_GetSubset_UpToMaxReturns()
         {
             int maxReturns = 2;
             List<Role> roles = await query.RetrieveRolesAsync(maxReturns, 0);
@@ -68,7 +68,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
-        public async Task RetrieveRolesAsync_Success_GetSubset_OnlyAfterStartIndex()
+        public async Task RetrieveRolesAsync_GetSubset_OnlyAfterStartIndex()
         {
             int maxReturns = 100;
             int startIndex = 4;
@@ -88,7 +88,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
-        public async Task RetrieveRolesAsync_Success_GetNothing_StartIndexTooGreat()
+        public async Task RetrieveRolesAsync_GetNothing_StartIndexTooGreat()
         {
             int maxReturns = 100;
             int startIndex = 100;
@@ -98,7 +98,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
-        public async Task RetrieveRolesAsync_Success_GetNothing_NoDataOnTable()
+        public async Task RetrieveRolesAsync_GetNothing_NoDataOnTable()
         {
             context.Jobs.RemoveRange(TestDataSetup.Jobs);
             context.SaveChanges();
