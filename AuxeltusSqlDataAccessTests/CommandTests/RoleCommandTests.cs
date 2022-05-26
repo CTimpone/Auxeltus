@@ -101,11 +101,9 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         [TestCategory(TestCategoryConstants.DELETE_ROLE_CATEGORY)]
         public async Task DeleteRoleAsync_Success()
         {
-            Random rnd = new Random();
-
             int initialCount = Roles.Count;
 
-            Role toBeDeleted = Roles[rnd.Next(0, initialCount - 1)];
+            Role toBeDeleted = Roles[4];
             await command.DeleteRoleAsync(toBeDeleted.Id);
 
             Assert.IsFalse(context.Roles.Any(r => r.Id == toBeDeleted.Id));

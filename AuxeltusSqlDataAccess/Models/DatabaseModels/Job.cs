@@ -50,6 +50,7 @@ namespace Auxeltus.AccessLayer.Sql
         {
             Description = otherJob.Description ?? Description;
             Salary = otherJob.Salary ?? Salary;
+            SalaryType = otherJob.SalaryType ?? SalaryType;
             EmployeeType = otherJob.EmployeeType ?? EmployeeType;
             EmployeeId = otherJob.EmployeeId ?? EmployeeId;
             ReportingEmployeeId = otherJob.ReportingEmployeeId ?? ReportingEmployeeId;
@@ -60,13 +61,19 @@ namespace Auxeltus.AccessLayer.Sql
                 Location = null;
                 LocationId = null;
                 Remote = true;
-            } else if (otherJob.LocationId != null)
+            } else if (otherJob.Location != null || (otherJob.LocationId != null && otherJob.LocationId != 0))
             {
                 Location = otherJob.Location;
                 LocationId = otherJob.LocationId;
 
                 Remote = otherJob.Remote;
-            } 
+            }
+
+            if (otherJob.Role != null || otherJob.RoleId != 0)
+            {
+                Role = otherJob.Role;
+                RoleId = otherJob.RoleId == 0 ? otherJob.Role.Id : otherJob.RoleId;
+            }
         }
     }
 }
