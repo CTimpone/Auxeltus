@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AuxeltusSqlDataAccessTests
 {
     [TestClass]
-    public class RoleQueryTests
+    public class RoleQueryTests: TestBase
     {
         public AuxeltusSqlContext context;
         public ILogger testLogger;
@@ -20,7 +20,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestInitialize]
         public void Initialize()
         {
-            context = TestDataSetup.GenerateTestDataContext();
+            context = GenerateTestDataContext();
             testLogger = NullLogger.Instance;
             query = new RoleQuery(testLogger, context);
         }
@@ -38,15 +38,13 @@ namespace AuxeltusSqlDataAccessTests
         {
             List<Role> roles = await query.RetrieveRolesAsync(100, 0);
 
-            Assert.AreEqual(TestDataSetup.Roles.Count, roles.Count);
+            Assert.AreEqual(Roles.Count, roles.Count);
 
             foreach (Role role in roles)
             {
-                Role matchingRole = TestDataSetup.Roles.First(r => r.Id == role.Id);
-                Assert.AreEqual(matchingRole.Title, role.Title);
-                Assert.AreEqual(matchingRole.MaximumSalary, role.MaximumSalary);
-                Assert.AreEqual(matchingRole.MinimumSalary, role.MinimumSalary);
-                Assert.AreEqual(matchingRole.Tier, role.Tier);
+                Role matchingRole = Roles.First(r => r.Id == role.Id);
+
+                CompareRoles(matchingRole, role);
             }
         }
 
@@ -61,11 +59,9 @@ namespace AuxeltusSqlDataAccessTests
 
             foreach (Role role in roles)
             {
-                Role matchingRole = TestDataSetup.Roles.First(r => r.Id == role.Id);
-                Assert.AreEqual(matchingRole.Title, role.Title);
-                Assert.AreEqual(matchingRole.MaximumSalary, role.MaximumSalary);
-                Assert.AreEqual(matchingRole.MinimumSalary, role.MinimumSalary);
-                Assert.AreEqual(matchingRole.Tier, role.Tier);
+                Role matchingRole = Roles.First(r => r.Id == role.Id);
+
+                CompareRoles(matchingRole, role);
             }
         }
 
@@ -77,16 +73,14 @@ namespace AuxeltusSqlDataAccessTests
             int startIndex = 4;
             List<Role> roles = await query.RetrieveRolesAsync(maxReturns, startIndex);
 
-            Assert.AreEqual(TestDataSetup.Roles.Count - (startIndex - 1), roles.Count);
+            Assert.AreEqual(Roles.Count - (startIndex - 1), roles.Count);
 
             foreach (Role role in roles)
             {
                 Assert.IsTrue(role.Id >= startIndex);
-                Role matchingRole = TestDataSetup.Roles.First(r => r.Id == role.Id);
-                Assert.AreEqual(matchingRole.Title, role.Title);
-                Assert.AreEqual(matchingRole.MaximumSalary, role.MaximumSalary);
-                Assert.AreEqual(matchingRole.MinimumSalary, role.MinimumSalary);
-                Assert.AreEqual(matchingRole.Tier, role.Tier);
+                Role matchingRole = Roles.First(r => r.Id == role.Id);
+
+                CompareRoles(matchingRole, role);
             }
         }
 
@@ -105,9 +99,9 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetNothing_NoDataOnTable()
         {
-            context.Jobs.RemoveRange(TestDataSetup.Jobs);
+            context.Jobs.RemoveRange(Jobs);
             context.SaveChanges();
-            context.Roles.RemoveRange(TestDataSetup.Roles);
+            context.Roles.RemoveRange(Roles);
             context.SaveChanges();
 
             int maxReturns = 100;

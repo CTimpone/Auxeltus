@@ -1,17 +1,70 @@
 ﻿using Auxeltus.AccessLayer.Sql;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AuxeltusSqlDataAccessTests
 {
-    internal static class TestDataSetup
+    public class TestBase
     {
-        public static List<Location> Locations;
-        public static List<Role> Roles;
-        public static List<Job> Jobs;
+        public List<Location> Locations = new List<Location>();
+        public List<Role> Roles = new List<Role>();
+        public List<Job> Jobs = new List<Job>();
 
-        public static AuxeltusSqlContext GenerateTestDataContext(bool setupData = true)
+        public void CompareRoles(Role expected, Role actual)
+        {
+            Assert.AreEqual(expected.Title, actual.Title);
+            Assert.AreEqual(expected.Tier, actual.Tier);
+            Assert.AreEqual(expected.MaximumSalary, actual.MaximumSalary);
+            Assert.AreEqual(expected.MinimumSalary, actual.MinimumSalary);
+        }
+
+        public void CompareLocations(Location expected, Location actual)
+        {
+            Assert.AreEqual(expected.Name, actual.Name);
+            Assert.AreEqual(expected.Longitude, actual.Longitude);
+            Assert.AreEqual(expected.Latitude, actual.Latitude);
+        }
+
+        public void CompareJobs(Job expected, Job actual)
+        {
+            Assert.AreEqual(expected.Salary, actual.Salary);
+            Assert.AreEqual(expected.SalaryType, actual.SalaryType);
+            Assert.AreEqual(expected.Archived, actual.Archived);
+            Assert.AreEqual(expected.Description, actual.Description);
+            Assert.AreEqual(expected.ReportingEmployeeId, actual.ReportingEmployeeId);
+
+            CompareRoles(expected.Role, actual.Role);
+
+            if (expected.EmployeeId == null)
+            {
+                Assert.IsNull(actual.EmployeeId);
+
+            }
+            else
+            {
+                Assert.AreEqual(expected.EmployeeType, actual.EmployeeType);
+                Assert.AreEqual(expected.EmployeeId, actual.EmployeeId);
+            }
+
+            if (expected.Remote == true)
+            {
+                Assert.IsTrue(actual.Remote);
+                Assert.IsNull(actual.Location);
+                Assert.IsNull(actual.LocationId);
+            }
+            else
+            {
+                Assert.IsFalse(actual.Remote);
+                Assert.IsNotNull(actual.Location);
+                Assert.IsNotNull(actual.LocationId);
+                Assert.AreEqual(expected.Location.Id, actual.Location.Id);
+                CompareLocations(expected.Location, actual.Location);
+            }
+        }
+
+        public AuxeltusSqlContext GenerateTestDataContext(bool setupData = true)
         {
             DbContextOptions<AuxeltusSqlContext> options = new DbContextOptionsBuilder<AuxeltusSqlContext>()
                 .UseSqlite("DataSource=:memory:")
@@ -34,7 +87,7 @@ namespace AuxeltusSqlDataAccessTests
             return context;
         }
 
-        private static void AddLocationsToContext(AuxeltusSqlContext context)
+        private void AddLocationsToContext(AuxeltusSqlContext context)
         {
             Locations = new List<Location>
             {
@@ -75,7 +128,7 @@ namespace AuxeltusSqlDataAccessTests
             Locations = context.Locations.ToListAsync().GetAwaiter().GetResult();
         }
 
-        private static void AddRolesToContext(AuxeltusSqlContext context)
+        private void AddRolesToContext(AuxeltusSqlContext context)
         {
             Roles = new List<Role>
             {
@@ -143,7 +196,7 @@ namespace AuxeltusSqlDataAccessTests
             Roles = context.Roles.ToListAsync().GetAwaiter().GetResult();
         }
 
-        private static void AddJobsToContext(AuxeltusSqlContext context)
+        private void AddJobsToContext(AuxeltusSqlContext context)
         {
             Jobs = new List<Job>
             {

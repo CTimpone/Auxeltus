@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AuxeltusSqlDataAccessTests
 {
     [TestClass]
-    public class LocationQueryTests
+    public class LocationQueryTests: TestBase
     {
         public AuxeltusSqlContext context;
         public ILogger testLogger;
@@ -20,7 +20,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestInitialize]
         public void Initialize()
         {
-            context = TestDataSetup.GenerateTestDataContext();
+            context = GenerateTestDataContext();
             testLogger = NullLogger.Instance;
             query = new LocationQuery(testLogger, context);
         }
@@ -38,14 +38,13 @@ namespace AuxeltusSqlDataAccessTests
         {
             List<Location> locations = await query.RetrieveLocationsAsync(100, 0);
 
-            Assert.AreEqual(TestDataSetup.Locations.Count, locations.Count);
+            Assert.AreEqual(Locations.Count, locations.Count);
 
             foreach (Location location in locations)
             {
-                Location matchedLocation = TestDataSetup.Locations.First(l => l.Id == location.Id);
-                Assert.AreEqual(matchedLocation.Name, location.Name);
-                Assert.AreEqual(matchedLocation.Longitude, location.Longitude);
-                Assert.AreEqual(matchedLocation.Latitude, location.Latitude);
+                Location matchedLocation = Locations.First(l => l.Id == location.Id);
+
+                CompareLocations(matchedLocation, location);
             }
         }
 
@@ -61,10 +60,9 @@ namespace AuxeltusSqlDataAccessTests
 
             foreach (Location location in locations)
             {
-                Location matchedLocation = TestDataSetup.Locations.First(l => l.Id == location.Id);
-                Assert.AreEqual(matchedLocation.Name, location.Name);
-                Assert.AreEqual(matchedLocation.Longitude, location.Longitude);
-                Assert.AreEqual(matchedLocation.Latitude, location.Latitude);
+                Location matchedLocation = Locations.First(l => l.Id == location.Id);
+
+                CompareLocations(matchedLocation, location);
             }
         }
 
@@ -77,14 +75,13 @@ namespace AuxeltusSqlDataAccessTests
 
             List<Location> locations = await query.RetrieveLocationsAsync(maxReturns, startIndex);
 
-            Assert.AreEqual(TestDataSetup.Locations.Count - (startIndex - 1), locations.Count);
+            Assert.AreEqual(Locations.Count - (startIndex - 1), locations.Count);
 
             foreach (Location location in locations)
             {
-                Location matchedLocation = TestDataSetup.Locations.First(l => l.Id == location.Id);
-                Assert.AreEqual(matchedLocation.Name, location.Name);
-                Assert.AreEqual(matchedLocation.Longitude, location.Longitude);
-                Assert.AreEqual(matchedLocation.Latitude, location.Latitude);
+                Location matchedLocation = Locations.First(l => l.Id == location.Id);
+
+                CompareLocations(matchedLocation, location);
             }
         }
 
@@ -103,9 +100,9 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
         public async Task RetrieveLocationsAsync_GetNothing_NoDataOnTable()
         {
-            context.Jobs.RemoveRange(TestDataSetup.Jobs);
+            context.Jobs.RemoveRange(Jobs);
             context.SaveChanges();
-            context.Locations.RemoveRange(TestDataSetup.Locations);
+            context.Locations.RemoveRange(Locations);
             context.SaveChanges();
 
             int maxReturns = 100;
@@ -123,7 +120,5 @@ namespace AuxeltusSqlDataAccessTests
             query = new LocationQuery(testLogger, null);
             await query.RetrieveLocationsAsync(null, null);
         }
-
-
     }
 }
