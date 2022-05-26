@@ -38,8 +38,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(JobsCommand)}.{nameof(CreateJobAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(JobsCommand)}.{nameof(CreateJobAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
 
@@ -61,8 +62,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(JobsCommand)}.{nameof(UpdateJobAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(JobsCommand)}.{nameof(UpdateJobAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
 
@@ -83,8 +85,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(JobsCommand)}.{nameof(DeleteJobAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(JobsCommand)}.{nameof(DeleteJobAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
     }

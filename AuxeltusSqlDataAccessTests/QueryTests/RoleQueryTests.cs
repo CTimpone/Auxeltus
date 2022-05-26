@@ -117,5 +117,14 @@ namespace AuxeltusSqlDataAccessTests
             Assert.AreEqual(0, roles.Count);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
+        [ExpectedException(typeof(AuxeltusSqlException))]
+        public async Task RetrieveRolesAsync_Error_EFCoreContextThrows()
+        {
+            query = new RoleQuery(testLogger, null);
+            await query.RetrieveRolesAsync(null, null);
+        }
+
     }
 }

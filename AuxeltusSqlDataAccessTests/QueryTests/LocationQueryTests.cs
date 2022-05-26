@@ -115,5 +115,15 @@ namespace AuxeltusSqlDataAccessTests
             Assert.AreEqual(0, locations.Count);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
+        [ExpectedException(typeof(AuxeltusSqlException))]
+        public async Task RetrieveRolesAsync_Error_EFCoreContextThrows()
+        {
+            query = new LocationQuery(testLogger, null);
+            await query.RetrieveLocationsAsync(null, null);
+        }
+
+
     }
 }
