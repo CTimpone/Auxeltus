@@ -37,8 +37,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(RoleCommand)}.{nameof(CreateRoleAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(RoleCommand)}.{nameof(CreateRoleAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
 
@@ -60,8 +61,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(RoleCommand)}.{nameof(UpdateRoleAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(RoleCommand)}.{nameof(UpdateRoleAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
 
@@ -82,8 +84,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(RoleCommand)}.{nameof(DeleteRoleAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(RoleCommand)}.{nameof(DeleteRoleAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
     }

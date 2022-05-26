@@ -87,13 +87,22 @@ namespace AuxeltusSqlDataAccessTests
 
         [TestMethod]
         [TestCategory(TestCategoryConstants.RETRIEVE_JOB_ASYNC_CATEGORY)]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(AuxeltusSqlException))]
         public async Task RetrieveJobAsync_Error_JobIdDoesNotEist()
         {
             await query.RetrieveJobAsync(9999);
 
             //Should fail prior to reaching this, resulting in the ExpectedException 
             Assert.Fail();
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_JOB_ASYNC_CATEGORY)]
+        [ExpectedException(typeof(AuxeltusSqlException))]
+        public async Task RetrieveJobAsync_Error_EFCoreContextThrows()
+        {
+            query = new JobsQuery(testLogger, null);
+            await query.RetrieveJobAsync(1);
         }
 
         [TestMethod]
@@ -180,6 +189,15 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_OPEN_JOBS_CATEGORY)]
+        [ExpectedException(typeof(AuxeltusSqlException))]
+        public async Task RetrieveOpenJobsAsync_Error_EFCoreContextThrows()
+        {
+            query = new JobsQuery(testLogger, null);
+            await query.RetrieveOpenJobsAsync(null, null);
+        }
+
+        [TestMethod]
         [TestCategory(TestCategoryConstants.RETRIEVE_REPORTING_JOBS_CATEGORY)]
         public async Task RetrieveJobsReportingToAsync_RetrieveAllJobsReportingToSingleEmployee()
         {
@@ -222,6 +240,15 @@ namespace AuxeltusSqlDataAccessTests
             List<Job> jobs = await query.RetrieveJobsReportingToAsync(reportingEmployeeId);
 
             Assert.AreEqual(0, jobs.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_REPORTING_JOBS_CATEGORY)]
+        [ExpectedException(typeof(AuxeltusSqlException))]
+        public async Task RetrieveJobsReportingToAsync_Error_EFCoreContextThrows()
+        {
+            query = new JobsQuery(testLogger, null);
+            await query.RetrieveJobsReportingToAsync(3);
         }
 
         private void CompareJobs(Job expected, Job actual)

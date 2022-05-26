@@ -37,8 +37,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(LocationCommand)}.{nameof(CreateLocationAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(LocationCommand)}.{nameof(CreateLocationAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
 
@@ -60,8 +61,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(LocationCommand)}.{nameof(UpdateLocationAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(LocationCommand)}.{nameof(UpdateLocationAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
 
@@ -82,8 +84,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(LocationCommand)}.{nameof(DeleteLocationAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(LocationCommand)}.{nameof(DeleteLocationAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
     }

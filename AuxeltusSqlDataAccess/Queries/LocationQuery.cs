@@ -46,8 +46,9 @@ namespace Auxeltus.AccessLayer.Sql
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(LocationQuery)}.{nameof(RetrieveLocationsAsync)}");
-                throw;
+                string message = $"Exception thrown in {nameof(LocationQuery)}.{nameof(RetrieveLocationsAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
             }
         }
     }
