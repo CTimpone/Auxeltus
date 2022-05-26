@@ -49,7 +49,7 @@ namespace Auxeltus.AccessLayer.Sql
 
             modelBuilder.Entity<Job>()
                 .HasCheckConstraint("CK_EmployeeHasSalary", "([EmployeeId] IS NULL AND [Salary] IS NULL) OR ([EmployeeId] IS NOT NULL AND [Salary] IS NOT NULL)")
-                .HasCheckConstraint("CK_EmployeeLocationSanity", "[LocationId] IS NOT NULL OR [Remote] = 1")
+                .HasCheckConstraint("CK_EmployeeLocationSanity", "([LocationId] IS NOT NULL AND [Remote] = 0) OR ([Remote] = 1 AND [LocationId] IS NULL)")
                 .Property(prop => prop.Archived)
                 .HasDefaultValue(false);
 

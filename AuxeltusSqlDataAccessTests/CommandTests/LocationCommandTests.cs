@@ -124,11 +124,9 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         [TestCategory(TestCategoryConstants.DELETE_LOCATION_CATEGORY)]
         public async Task DeleteLocationAsync_Success()
         {
-            Random rnd = new Random();
-
             int initialCount = Locations.Count;
 
-            Location toBeDeleted = Locations[rnd.Next(0, initialCount - 1)];
+            Location toBeDeleted = Locations[1];
             await command.DeleteLocationAsync(toBeDeleted.Id);
 
             Assert.IsFalse(context.Locations.Any(r => r.Id == toBeDeleted.Id));
