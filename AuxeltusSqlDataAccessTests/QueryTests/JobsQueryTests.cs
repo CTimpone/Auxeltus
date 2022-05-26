@@ -90,7 +90,93 @@ namespace AuxeltusSqlDataAccessTests
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task RetrieveJobAsync_Error_JobIdDoesNotEist()
         {
-            Job job = await query.RetrieveJobAsync(9999);
+            await query.RetrieveJobAsync(9999);
+
+            //Should fail prior to reaching this, resulting in the ExpectedException 
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_OPEN_JOBS_CATEGORY)]
+        public async Task RetrieveOpenJobsAsync_RetrieveAllQualifyingRecords()
+        {
+            int maxReturns = 100;
+            int startIndex = 0;
+            List<Job> jobs = await query.RetrieveOpenJobsAsync(maxReturns, startIndex);
+
+            List<Job> possibleJobs = TestDataSetup.Jobs
+                .Where(j => j.EmployeeId == null && j.Archived == false)
+                .ToList();
+            
+            Assert.AreEqual(possibleJobs.Count, jobs.Count);
+            Assert.IsTrue(jobs.All(j => j.EmployeeId == null && j.Archived == false));
+
+            foreach (Job job in jobs)
+            {
+                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                CompareJobs(match, job);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_OPEN_JOBS_CATEGORY)]
+        public async Task RetrieveOpenJobsAsync_RetrieveSubset_UpToMaxReturns()
+        {
+            int maxReturns = 2;
+            int startIndex = 0;
+            List<Job> jobs = await query.RetrieveOpenJobsAsync(maxReturns, startIndex);
+
+            Assert.AreEqual(2, jobs.Count);
+            Assert.IsTrue(jobs.All(j => j.EmployeeId == null && j.Archived == false));
+
+            foreach (Job job in jobs)
+            {
+                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                CompareJobs(match, job);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_OPEN_JOBS_CATEGORY)]
+        public async Task RetrieveOpenJobsAsync_RetrieveSubset_GreaterThanStartIndex()
+        {
+            int maxReturns = 100;
+            int startIndex = 2;
+            List<Job> jobs = await query.RetrieveOpenJobsAsync(maxReturns, startIndex);
+
+            Assert.AreEqual(1, jobs.Count);
+            Assert.IsTrue(jobs.All(j => j.EmployeeId == null && j.Archived == false && j.Id >= startIndex));
+
+            foreach (Job job in jobs)
+            {
+                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                CompareJobs(match, job);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_OPEN_JOBS_CATEGORY)]
+        public async Task RetrieveOpenJobsAsync_NoData_StartIndexTooGreat()
+        {
+            int maxReturns = 100;
+            int startIndex = 100;
+            List<Job> jobs = await query.RetrieveOpenJobsAsync(maxReturns, startIndex);
+
+            Assert.AreEqual(0, jobs.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_OPEN_JOBS_CATEGORY)]
+        public async Task RetrieveOpenJobsAsync_NoData_NoDataOnDatabase()
+        {
+            context.Jobs.RemoveRange(TestDataSetup.Jobs);
+            context.SaveChanges();
+
+            int maxReturns = 100;
+            int startIndex = 0;
+            List<Job> jobs = await query.RetrieveOpenJobsAsync(maxReturns, startIndex);
+
+            Assert.AreEqual(0, jobs.Count);
         }
 
 

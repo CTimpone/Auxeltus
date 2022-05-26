@@ -249,7 +249,21 @@ namespace AuxeltusSqlDataAccessTests
                     Archived = false,
                     LocationId = null,
                     RoleId = Roles[1].Id
-                }
+                },
+                new Job
+                {
+                    Description = "Open but archived.",
+                    EmployeeId = null,
+                    ReportingEmployeeId = 5,
+                    EmployeeType = EmployeeType.FullTime,
+                    SalaryType = SalaryType.Annual,
+                    Remote = false,
+                    Salary = null,
+                    Archived = true,
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles[5].Id
+                },
+
 
             };
 
