@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AuxeltusSqlDataAccessTests
 {
     [TestClass]
-    public class JobsQueryTests
+    public class JobsQueryTests: TestBase
     {
         public AuxeltusSqlContext context;
         public ILogger testLogger;
@@ -20,7 +20,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestInitialize]
         public void Initialize()
         {
-            context = TestDataSetup.GenerateTestDataContext();
+            context = GenerateTestDataContext();
             testLogger = NullLogger.Instance;
             query = new JobsQuery(testLogger, context);
         }
@@ -36,7 +36,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_JOB_ASYNC_CATEGORY)]
         public async Task RetrieveJobAsync_RoleAndLocationIncluded()
         {
-            Job initialJob = TestDataSetup.Jobs.First(x => x.Description.Equals("A job without peer!"));
+            Job initialJob = Jobs.First(x => x.Description.Equals("A job without peer!"));
             Job job = await query.RetrieveJobAsync(initialJob.Id);
 
             Assert.IsNotNull(job);
@@ -50,7 +50,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_JOB_ASYNC_CATEGORY)]
         public async Task RetrieveJobAsync_Remote_NoLocation()
         {
-            Job initialJob = TestDataSetup.Jobs.First(x => x.Description.Equals("You can never escape management."));
+            Job initialJob = Jobs.First(x => x.Description.Equals("You can never escape management."));
             Job job = await query.RetrieveJobAsync(initialJob.Id);
 
             Assert.IsNotNull(job);
@@ -64,7 +64,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_JOB_ASYNC_CATEGORY)]
         public async Task RetrieveJobAsync_UnfilledPosition()
         {
-            Job initialJob = TestDataSetup.Jobs.First(x => x.Description.Equals("A job in search of an employee!"));
+            Job initialJob = Jobs.First(x => x.Description.Equals("A job in search of an employee!"));
             Job job = await query.RetrieveJobAsync(initialJob.Id);
 
             Assert.IsNotNull(job);
@@ -76,7 +76,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_JOB_ASYNC_CATEGORY)]
         public async Task RetrieveJobAsync_UnfilledRemotePosition()
         {
-            Job initialJob = TestDataSetup.Jobs.First(x => x.Description.Equals("Unfilled remote."));
+            Job initialJob = Jobs.First(x => x.Description.Equals("Unfilled remote."));
             Job job = await query.RetrieveJobAsync(initialJob.Id);
 
             Assert.IsNotNull(job);
@@ -113,7 +113,7 @@ namespace AuxeltusSqlDataAccessTests
             int startIndex = 0;
             List<Job> jobs = await query.RetrieveOpenJobsAsync(maxReturns, startIndex);
 
-            List<Job> possibleJobs = TestDataSetup.Jobs
+            List<Job> possibleJobs = Jobs
                 .Where(j => j.EmployeeId == null && j.Archived == false)
                 .ToList();
             
@@ -122,7 +122,7 @@ namespace AuxeltusSqlDataAccessTests
 
             foreach (Job job in jobs)
             {
-                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                Job match = Jobs.First(j => j.Id == job.Id);
                 CompareJobs(match, job);
             }
         }
@@ -140,7 +140,7 @@ namespace AuxeltusSqlDataAccessTests
 
             foreach (Job job in jobs)
             {
-                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                Job match = Jobs.First(j => j.Id == job.Id);
                 CompareJobs(match, job);
             }
         }
@@ -158,7 +158,7 @@ namespace AuxeltusSqlDataAccessTests
 
             foreach (Job job in jobs)
             {
-                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                Job match = Jobs.First(j => j.Id == job.Id);
                 CompareJobs(match, job);
             }
         }
@@ -178,7 +178,7 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_OPEN_JOBS_CATEGORY)]
         public async Task RetrieveOpenJobsAsync_NoData_NoDataOnDatabase()
         {
-            context.Jobs.RemoveRange(TestDataSetup.Jobs);
+            context.Jobs.RemoveRange(Jobs);
             context.SaveChanges();
 
             int maxReturns = 100;
@@ -208,7 +208,7 @@ namespace AuxeltusSqlDataAccessTests
 
             foreach (Job job in jobs)
             {
-                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                Job match = Jobs.First(j => j.Id == job.Id);
                 CompareJobs(match, job);
             }
         }
@@ -222,12 +222,12 @@ namespace AuxeltusSqlDataAccessTests
 
             Assert.IsTrue(jobs.All(j => j.ReportingEmployeeId == reportingEmployeeId && j.Archived == false));
 
-            Assert.AreNotEqual(TestDataSetup.Jobs.Where(j => j.ReportingEmployeeId == reportingEmployeeId).Count(),
+            Assert.AreNotEqual(Jobs.Where(j => j.ReportingEmployeeId == reportingEmployeeId).Count(),
                 jobs.Count);
 
             foreach (Job job in jobs)
             {
-                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                Job match = Jobs.First(j => j.Id == job.Id);
                 CompareJobs(match, job);
             }
         }
@@ -249,47 +249,6 @@ namespace AuxeltusSqlDataAccessTests
         {
             query = new JobsQuery(testLogger, null);
             await query.RetrieveJobsReportingToAsync(3);
-        }
-
-        private void CompareJobs(Job expected, Job actual)
-        {
-            Assert.AreEqual(expected.Salary, actual.Salary);
-            Assert.AreEqual(expected.SalaryType, actual.SalaryType);
-            Assert.AreEqual(expected.Archived, actual.Archived);
-            Assert.AreEqual(expected.Description, actual.Description);
-            Assert.AreEqual(expected.ReportingEmployeeId, actual.ReportingEmployeeId);
-
-            if (expected.EmployeeId == null)
-            {
-                Assert.IsNull(actual.EmployeeId);
-
-            }
-            else
-            {
-                Assert.AreEqual(expected.EmployeeType, actual.EmployeeType);
-                Assert.AreEqual(expected.EmployeeId, actual.EmployeeId);
-            }
-
-            if (expected.Remote == true)
-            {
-                Assert.IsTrue(actual.Remote);
-                Assert.IsNull(actual.Location);
-                Assert.IsNull(actual.LocationId);
-            } else
-            {
-                Assert.IsFalse(actual.Remote);
-                Assert.IsNotNull(actual.Location);
-                Assert.IsNotNull(actual.LocationId);
-                Assert.AreEqual(expected.Location.Id, actual.Location.Id);
-                Assert.AreEqual(expected.Location.Name, actual.Location.Name);
-                Assert.AreEqual(expected.Location.Longitude, actual.Location.Longitude);
-                Assert.AreEqual(expected.Location.Latitude, actual.Location.Latitude);
-            }
-
-            Assert.AreEqual(expected.Role.Title, actual.Role.Title);
-            Assert.AreEqual(expected.Role.MaximumSalary, actual.Role.MaximumSalary);
-            Assert.AreEqual(expected.Role.MinimumSalary, actual.Role.MinimumSalary);
-            Assert.AreEqual(expected.Role.Tier, actual.Role.Tier);
         }
     }
 }
