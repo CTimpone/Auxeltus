@@ -179,7 +179,50 @@ namespace AuxeltusSqlDataAccessTests
             Assert.AreEqual(0, jobs.Count);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_REPORTING_JOBS_CATEGORY)]
+        public async Task RetrieveJobsReportingToAsync_RetrieveAllJobsReportingToSingleEmployee()
+        {
+            int reportingEmployeeId = 3;
+            List<Job> jobs = await query.RetrieveJobsReportingToAsync(reportingEmployeeId);
 
+            Assert.IsTrue(jobs.All(j => j.ReportingEmployeeId == reportingEmployeeId && j.Archived == false));
+
+            foreach (Job job in jobs)
+            {
+                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                CompareJobs(match, job);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_REPORTING_JOBS_CATEGORY)]
+        public async Task RetrieveJobsReportingToAsync_RetrieveAllJobsReportingToSingleEmployee_NotArchived()
+        {
+            int reportingEmployeeId = 5;
+            List<Job> jobs = await query.RetrieveJobsReportingToAsync(reportingEmployeeId);
+
+            Assert.IsTrue(jobs.All(j => j.ReportingEmployeeId == reportingEmployeeId && j.Archived == false));
+
+            Assert.AreNotEqual(TestDataSetup.Jobs.Where(j => j.ReportingEmployeeId == reportingEmployeeId).Count(),
+                jobs.Count);
+
+            foreach (Job job in jobs)
+            {
+                Job match = TestDataSetup.Jobs.First(j => j.Id == job.Id);
+                CompareJobs(match, job);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_REPORTING_JOBS_CATEGORY)]
+        public async Task RetrieveJobsReportingToAsync_NoMatchOnReportingEmployeeId_NoData()
+        {
+            int reportingEmployeeId = 10000;
+            List<Job> jobs = await query.RetrieveJobsReportingToAsync(reportingEmployeeId);
+
+            Assert.AreEqual(0, jobs.Count);
+        }
 
         private void CompareJobs(Job expected, Job actual)
         {

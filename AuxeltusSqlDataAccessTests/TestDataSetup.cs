@@ -263,6 +263,19 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.Last().Id,
                     RoleId = Roles[5].Id
                 },
+                new Job
+                {
+                    Description = "Archived but reporting.",
+                    EmployeeId = 10,
+                    ReportingEmployeeId = 5,
+                    EmployeeType = EmployeeType.FullTime,
+                    SalaryType = SalaryType.Annual,
+                    Remote = false,
+                    Salary = 84000,
+                    Archived = true,
+                    LocationId = Locations.Last().Id,
+                    RoleId = Roles[1].Id
+                },
 
 
             };
