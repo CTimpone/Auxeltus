@@ -33,6 +33,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
         public async Task RetrieveLocationsAsync_GetAll()
         {
             List<Location> locations = await query.RetrieveLocationsAsync(100, 0);
@@ -49,6 +50,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
         public async Task RetrieveLocationsAsync_GetSubset_UpToMaxReturns()
         {
             int maxReturns = 2;
@@ -67,6 +69,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
         public async Task RetrieveLocationsAsync_GetSubset_OnlyAfterStartIndex()
         {
             int maxReturns = 100;
@@ -86,6 +89,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
         public async Task RetrieveLocationsAsync_GetNothing_StartIndexTooGreat()
         {
             int maxReturns = 100;
@@ -96,6 +100,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
         public async Task RetrieveLocationsAsync_GetNothing_NoDataOnTable()
         {
             context.Jobs.RemoveRange(TestDataSetup.Jobs);

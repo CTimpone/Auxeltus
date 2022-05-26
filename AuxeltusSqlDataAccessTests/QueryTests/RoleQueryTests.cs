@@ -33,6 +33,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetAll()
         {
             List<Role> roles = await query.RetrieveRolesAsync(100, 0);
@@ -50,6 +51,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetSubset_UpToMaxReturns()
         {
             int maxReturns = 2;
@@ -68,6 +70,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetSubset_OnlyAfterStartIndex()
         {
             int maxReturns = 100;
@@ -88,6 +91,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetNothing_StartIndexTooGreat()
         {
             int maxReturns = 100;
@@ -98,6 +102,7 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetNothing_NoDataOnTable()
         {
             context.Jobs.RemoveRange(TestDataSetup.Jobs);
