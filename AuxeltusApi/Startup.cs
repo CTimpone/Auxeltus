@@ -1,11 +1,15 @@
+using Auxeltus.AccessLayer.Sql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Enrichers.Sensitive;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +19,31 @@ namespace AuxeltusApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public Startup(IConfiguration configuration)
+        {
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appSettings.json");
+            Configuration = builder.Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .Enrich.FromLogContext()
+                .Enrich.WithCorrelationId()
+                .Enrich.WithSensitiveDataMasking()
+                .CreateLogger();
+
+        }
+
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AuxeltusSqlContext>(options =>
+                options.UseSqlServer(Environment.GetEnvironmentVariable("Auxeltus_SQLConnectionString")));
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -46,6 +61,7 @@ namespace AuxeltusApi
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
