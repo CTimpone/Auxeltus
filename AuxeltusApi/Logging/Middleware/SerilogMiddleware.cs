@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 
-namespace AuxeltusApi.Logging.Middleware
+namespace Auxeltus.Api.Middleware
 {
     public class SerilogMiddleware
     {
@@ -27,8 +27,10 @@ namespace AuxeltusApi.Logging.Middleware
                 throw new NullReferenceException(nameof(httpContext));
             }
 
-            using (LogContext.PushProperty("test", "different"))
+            using (LogContext.PushProperty("CorrelationId", httpContext.Response.Headers["CorrelationId"]))
             {
+                _logger.LogInformation($"Request {httpContext.Request.Path}");
+
                 Stopwatch sw = Stopwatch.StartNew();
                 try
                 {
@@ -42,7 +44,7 @@ namespace AuxeltusApi.Logging.Middleware
                         default:
                             using (_logger.EnterSensitiveArea(LogMaskingConstants.CreditCardMasking))
                             {
-                                _logger.LogInformation($"Request {httpContext.Request.Path}");
+                                _logger.LogInformation($"Response {httpContext.Response.StatusCode}");
                             }
                             break;
                     }

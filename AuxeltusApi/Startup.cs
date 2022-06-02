@@ -1,5 +1,5 @@
 using Auxeltus.AccessLayer.Sql;
-using AuxeltusApi.Logging.Middleware;
+using Auxeltus.Api.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AuxeltusApi
+namespace Auxeltus.Api
 {
     public class Startup
     {
@@ -33,7 +33,8 @@ namespace AuxeltusApi
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .WriteTo.Console(new RenderedCompactJsonFormatter())
+                .WriteTo.Async(a => a.Console(new RenderedCompactJsonFormatter()))
+                .Enrich.FromLogContext()
                 .Enrich.WithSensitiveDataMasking()
                 .CreateLogger();
         }
@@ -53,6 +54,7 @@ namespace AuxeltusApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<SerilogMiddleware>();
 
             app.UseHttpsRedirection();
