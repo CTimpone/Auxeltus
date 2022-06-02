@@ -1,4 +1,5 @@
 using Auxeltus.AccessLayer.Sql;
+using AuxeltusApi.Logging.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,7 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Core;
 using Serilog.Enrichers.Sensitive;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +32,10 @@ namespace AuxeltusApi
             Configuration = builder.Build();
 
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .Enrich.FromLogContext()
-                .Enrich.WithCorrelationId()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .WriteTo.Console(new RenderedCompactJsonFormatter())
                 .Enrich.WithSensitiveDataMasking()
                 .CreateLogger();
-
         }
 
 
@@ -51,6 +53,8 @@ namespace AuxeltusApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<SerilogMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -61,7 +65,6 @@ namespace AuxeltusApi
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }

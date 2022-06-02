@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using Serilog.Configuration;
+﻿using Serilog.Configuration;
 
 namespace Serilog.Enrichers.Sensitive
 {
     public static class ExtensionMethods
     {
-        public static SensitiveArea EnterSensitiveArea(this ILogger logger, params MaskingItem[] maskingItems)
+        public static SensitiveArea EnterSensitiveArea(this Microsoft.Extensions.Logging.ILogger logger, params MaskingItem[] maskingItems)
         {
             var sensitiveArea = new SensitiveArea(maskingItems);
 
