@@ -12,6 +12,6 @@ namespace Auxeltus.AccessLayer.Sql
         /// Retrieves a subset of <c>Location</c> objects from the data store.
         /// By default will return the first 256 <c>Location</c>s.
         /// </summary>
-        public Task<List<Location>> RetrieveLocationsAsync(int? maxReturn, int? startIndex);
+        public Task<List<LocationEntity>> RetrieveLocationsAsync(int? maxReturn, int? startIndex);
     }
 }

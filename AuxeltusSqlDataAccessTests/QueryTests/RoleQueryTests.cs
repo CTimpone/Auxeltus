@@ -36,13 +36,13 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetAll()
         {
-            List<Role> roles = await query.RetrieveRolesAsync(100, 0);
+            List<RoleEntity> roles = await query.RetrieveRolesAsync(100, 0);
 
             Assert.AreEqual(Roles.Count, roles.Count);
 
-            foreach (Role role in roles)
+            foreach (RoleEntity role in roles)
             {
-                Role matchingRole = Roles.First(r => r.Id == role.Id);
+                RoleEntity matchingRole = Roles.First(r => r.Id == role.Id);
 
                 CompareRoles(matchingRole, role);
             }
@@ -53,13 +53,13 @@ namespace AuxeltusSqlDataAccessTests
         public async Task RetrieveRolesAsync_GetSubset_UpToMaxReturns()
         {
             int maxReturns = 2;
-            List<Role> roles = await query.RetrieveRolesAsync(maxReturns, 0);
+            List<RoleEntity> roles = await query.RetrieveRolesAsync(maxReturns, 0);
 
             Assert.AreEqual(maxReturns, roles.Count);
 
-            foreach (Role role in roles)
+            foreach (RoleEntity role in roles)
             {
-                Role matchingRole = Roles.First(r => r.Id == role.Id);
+                RoleEntity matchingRole = Roles.First(r => r.Id == role.Id);
 
                 CompareRoles(matchingRole, role);
             }
@@ -71,14 +71,14 @@ namespace AuxeltusSqlDataAccessTests
         {
             int maxReturns = 100;
             int startIndex = 4;
-            List<Role> roles = await query.RetrieveRolesAsync(maxReturns, startIndex);
+            List<RoleEntity> roles = await query.RetrieveRolesAsync(maxReturns, startIndex);
 
             Assert.AreEqual(Roles.Count - (startIndex - 1), roles.Count);
 
-            foreach (Role role in roles)
+            foreach (RoleEntity role in roles)
             {
                 Assert.IsTrue(role.Id >= startIndex);
-                Role matchingRole = Roles.First(r => r.Id == role.Id);
+                RoleEntity matchingRole = Roles.First(r => r.Id == role.Id);
 
                 CompareRoles(matchingRole, role);
             }
@@ -90,7 +90,7 @@ namespace AuxeltusSqlDataAccessTests
         {
             int maxReturns = 100;
             int startIndex = 100;
-            List<Role> roles = await query.RetrieveRolesAsync(maxReturns, startIndex);
+            List<RoleEntity> roles = await query.RetrieveRolesAsync(maxReturns, startIndex);
 
             Assert.AreEqual(0, roles.Count);
         }
@@ -106,7 +106,7 @@ namespace AuxeltusSqlDataAccessTests
 
             int maxReturns = 100;
             int startIndex = 0;
-            List<Role> roles = await query.RetrieveRolesAsync(maxReturns, startIndex);
+            List<RoleEntity> roles = await query.RetrieveRolesAsync(maxReturns, startIndex);
 
             Assert.AreEqual(0, roles.Count);
         }

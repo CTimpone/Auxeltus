@@ -11,12 +11,12 @@ namespace Auxeltus.AccessLayer.Sql
         /// Adds a new <c>Job</c> to the data structure.
         /// Input object should not include an Id (as it is auto-generated as the primary key).
         /// </summary>
-        public Task CreateJobAsync(Job job);
+        public Task CreateJobAsync(JobEntity job);
 
         /// <summary>
         /// Updates an existing <c>Job</c> on the data structure.
         /// </summary>
-        public Task UpdateJobAsync(int jobId, Job job);
+        public Task UpdateJobAsync(int jobId, JobEntity job);
 
         /// <summary>
         /// Updates an existing <c>Job</c> on the data structure.

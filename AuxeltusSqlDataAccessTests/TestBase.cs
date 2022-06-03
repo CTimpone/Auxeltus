@@ -8,11 +8,11 @@ namespace AuxeltusSqlDataAccessTests
 {
     public class TestBase
     {
-        public List<Location> Locations = new List<Location>();
-        public List<Role> Roles = new List<Role>();
-        public List<Job> Jobs = new List<Job>();
+        public List<LocationEntity> Locations = new List<LocationEntity>();
+        public List<RoleEntity> Roles = new List<RoleEntity>();
+        public List<JobEntity> Jobs = new List<JobEntity>();
 
-        public void CompareRoles(Role expected, Role actual)
+        public void CompareRoles(RoleEntity expected, RoleEntity actual)
         {
             Assert.AreEqual(expected.Title, actual.Title);
             Assert.AreEqual(expected.Tier, actual.Tier);
@@ -20,14 +20,14 @@ namespace AuxeltusSqlDataAccessTests
             Assert.AreEqual(expected.MinimumSalary, actual.MinimumSalary);
         }
 
-        public void CompareLocations(Location expected, Location actual)
+        public void CompareLocations(LocationEntity expected, LocationEntity actual)
         {
             Assert.AreEqual(expected.Name, actual.Name);
             Assert.AreEqual(expected.Longitude, actual.Longitude);
             Assert.AreEqual(expected.Latitude, actual.Latitude);
         }
 
-        public void CompareJobs(Job expected, Job actual)
+        public void CompareJobs(JobEntity expected, JobEntity actual)
         {
             Assert.AreEqual(expected.Salary, actual.Salary);
             Assert.AreEqual(expected.SalaryType, actual.SalaryType);
@@ -89,33 +89,33 @@ namespace AuxeltusSqlDataAccessTests
 
         private void AddLocationsToContext(AuxeltusSqlContext context)
         {
-            Locations = new List<Location>
+            Locations = new List<LocationEntity>
             {
-                new Location
+                new LocationEntity
                 {
                     Name = "Columbus, Ohio",
                     Latitude = 40.03261910026816,
                     Longitude = -83.03349425205028
                 },
-                new Location
+                new LocationEntity
                 {
                     Name = "Evanston, Illinois",
                     Latitude = 42.05796965571029,
                     Longitude = -87.67593067172223
                 },
-                new Location
+                new LocationEntity
                 {
                     Name = "Chennai, India",
                     Latitude = 13.07149818062577,
                     Longitude = 80.25647616462626
                 },
-                new Location
+                new LocationEntity
                 {
                     Name = "North Vegas",
                     Latitude = 36.20616312689968,
                     Longitude = -115.11229175325266
                 },
-                new Location
+                new LocationEntity
                 {
                     Name = "Antarctica",
                     Latitude = -82,
@@ -130,58 +130,58 @@ namespace AuxeltusSqlDataAccessTests
 
         private void AddRolesToContext(AuxeltusSqlContext context)
         {
-            Roles = new List<Role>
+            Roles = new List<RoleEntity>
             {
-                new Role
+                new RoleEntity
                 {
                     Title = "Software Developer",
                     Tier = 2,
                     MinimumSalary = 75000,
                     MaximumSalary = 120000
                 },
-                new Role
+                new RoleEntity
                 {
                     Title = "Senior Software Developer",
                     Tier = 3,
                     MinimumSalary = 105000,
                     MaximumSalary = 150000
                 },
-                new Role
+                new RoleEntity
                 {
                     Title = "Super Senior Software Developer",
                     Tier = 4,
                     MinimumSalary = 137293,
                     MaximumSalary = 215247
                 },
-                new Role
+                new RoleEntity
                 {
                     Title = "Custodian",
                     Tier = 2,
                     MinimumSalary = 85000,
                     MaximumSalary = 85000
                 },
-                new Role
+                new RoleEntity
                 {
                     Title = "Junior Software Developer",
                     Tier = 1,
                     MinimumSalary = 60000,
                     MaximumSalary = 80000
                 },
-                new Role
+                new RoleEntity
                 {
                     Title = "Manager",
                     Tier = 3,
                     MinimumSalary = 95000,
                     MaximumSalary = 135000
                 },
-                new Role
+                new RoleEntity
                 {
                     Title = "Super Manager Deluxe with Cheese",
                     Tier = 4,
                     MinimumSalary = 127500,
                     MaximumSalary = 152500
                 },
-                new Role
+                new RoleEntity
                 {
                     Title = "Real Big Executive",
                     Tier = 5,
@@ -198,9 +198,9 @@ namespace AuxeltusSqlDataAccessTests
 
         private void AddJobsToContext(AuxeltusSqlContext context)
         {
-            Jobs = new List<Job>
+            Jobs = new List<JobEntity>
             {
-                new Job
+                new JobEntity
                 {
                     Description = "A job without peer!",
                     EmployeeId = 1,
@@ -213,7 +213,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.First().Id,
                     RoleId = Roles[3].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "A job in search of an employee!",
                     EmployeeId = null,
@@ -225,7 +225,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.Last().Id,
                     RoleId = Roles.First().Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "The elusive contractor!",
                     EmployeeId = 4,
@@ -238,7 +238,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.Last().Id,
                     RoleId = Roles[1].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "You can never escape management.",
                     EmployeeId = 3,
@@ -251,7 +251,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = null,
                     RoleId = Roles[5].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "The true management starts here.",
                     EmployeeId = 5,
@@ -264,7 +264,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.Last().Id,
                     RoleId = Roles[5].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "Grand poo-bah.",
                     EmployeeId = 6,
@@ -277,7 +277,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.Last().Id,
                     RoleId = Roles[5].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "An hour is a unit of time conventionally reckoned as 1/24 of a day and scientifically reckoned as 3,599-3,601 seconds, depending on conditions (thanks Wikipedia).",
                     EmployeeId = 7,
@@ -290,7 +290,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.Last().Id,
                     RoleId = Roles[2].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "Unfilled remote.",
                     EmployeeId = null,
@@ -303,7 +303,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = null,
                     RoleId = Roles[1].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "Open but archived.",
                     EmployeeId = null,
@@ -316,7 +316,7 @@ namespace AuxeltusSqlDataAccessTests
                     LocationId = Locations.Last().Id,
                     RoleId = Roles[5].Id
                 },
-                new Job
+                new JobEntity
                 {
                     Description = "Archived but reporting.",
                     EmployeeId = 10,

@@ -36,9 +36,9 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Success()
         {
             Random rnd = new Random();
-            Location underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
-            Job newJob = new Job
+            LocationEntity underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = rnd.Next(),
                 ReportingEmployeeId = rnd.Next(),
@@ -54,7 +54,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
 
             await command.CreateJobAsync(newJob);
 
-            Job addedJob = context.Jobs
+            JobEntity addedJob = context.Jobs
                 .Include(j => j.Location)
                 .Include(j => j.Role)
                 .First(j => j.Description == newJob.Description);
@@ -68,8 +68,8 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Success_RemoteNoLocation()
         {
             Random rnd = new Random();
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
-            Job newJob = new Job
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = rnd.Next(),
                 ReportingEmployeeId = rnd.Next(),
@@ -85,7 +85,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
 
             await command.CreateJobAsync(newJob);
 
-            Job addedJob = context.Jobs
+            JobEntity addedJob = context.Jobs
                 .Include(j => j.Location)
                 .Include(j => j.Role)
                 .First(j => j.Description == newJob.Description);
@@ -99,9 +99,9 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Success_NoEmployeeNoSalary()
         {
             Random rnd = new Random();
-            Location underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
-            Job newJob = new Job
+            LocationEntity underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = null,
                 ReportingEmployeeId = rnd.Next(),
@@ -117,7 +117,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
 
             await command.CreateJobAsync(newJob);
 
-            Job addedJob = context.Jobs
+            JobEntity addedJob = context.Jobs
                 .Include(j => j.Location)
                 .Include(j => j.Role)
                 .First(j => j.Description == newJob.Description);
@@ -132,10 +132,10 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Error_RemoteWithLocation()
         {
             Random rnd = new Random();
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
-            Location underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            LocationEntity underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
 
-            Job newJob = new Job
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = rnd.Next(),
                 ReportingEmployeeId = rnd.Next(),
@@ -158,9 +158,9 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Error_NotRemoteNoLocation()
         {
             Random rnd = new Random();
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
 
-            Job newJob = new Job
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = rnd.Next(),
                 ReportingEmployeeId = rnd.Next(),
@@ -183,10 +183,10 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Error_FilledPositionNoSalary()
         {
             Random rnd = new Random();
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
-            Location underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            LocationEntity underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
 
-            Job newJob = new Job
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = rnd.Next(),
                 ReportingEmployeeId = rnd.Next(),
@@ -209,10 +209,10 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Error_UnilledPositionWithSalary()
         {
             Random rnd = new Random();
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
-            Location underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            LocationEntity underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
 
-            Job newJob = new Job
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = null,
                 ReportingEmployeeId = rnd.Next(),
@@ -235,9 +235,9 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateJobAsync_Error_EFCoreContextNull()
         {
             Random rnd = new Random();
-            Location underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
-            Job newJob = new Job
+            LocationEntity underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            JobEntity newJob = new JobEntity
             {
                 EmployeeId = rnd.Next(),
                 ReportingEmployeeId = rnd.Next(),
@@ -264,7 +264,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         {
             int initialCount = Jobs.Count;
 
-            Job toBeDeleted = Jobs[4];
+            JobEntity toBeDeleted = Jobs[4];
             await command.DeleteJobAsync(toBeDeleted.Id);
 
             Assert.IsFalse(context.Jobs.Any(j => j.Id == toBeDeleted.Id));
@@ -298,12 +298,12 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
             Random rnd = new Random();
 
             int initialCount = Jobs.Count;
-            Job toBeUpdated = Jobs[rnd.Next(0, initialCount - 1)];
+            JobEntity toBeUpdated = Jobs[rnd.Next(0, initialCount - 1)];
 
-            Location underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
-            Role underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
+            LocationEntity underlyingLoc = Locations[rnd.Next(0, Locations.Count - 1)];
+            RoleEntity underlyingRole = Roles[rnd.Next(0, Locations.Count - 1)];
 
-            Job jobUpdate = new Job
+            JobEntity jobUpdate = new JobEntity
             {
                 EmployeeId = rnd.Next(),
                 ReportingEmployeeId = rnd.Next(),
@@ -320,7 +320,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
 
             await command.UpdateJobAsync(toBeUpdated.Id, jobUpdate);
 
-            Job finalJob = context.Jobs
+            JobEntity finalJob = context.Jobs
                 .Include(j => j.Location)
                 .Include(j => j.Role)
                 .First(j => j.Description == jobUpdate.Description);
@@ -336,18 +336,18 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
             Random rnd = new Random();
 
             int initialCount = Jobs.Count;
-            Job toBeUpdated = Jobs[rnd.Next(0, initialCount - 1)];
+            JobEntity toBeUpdated = Jobs[rnd.Next(0, initialCount - 1)];
 
-            Job jobUpdate = new Job
+            JobEntity jobUpdate = new JobEntity
             {
                 Description = Guid.NewGuid().ToString("N"),
             };
 
             await command.UpdateJobAsync(toBeUpdated.Id, jobUpdate);
 
-            Job finalJob = context.Jobs.First(j => j.Description == jobUpdate.Description);
+            JobEntity finalJob = context.Jobs.First(j => j.Description == jobUpdate.Description);
 
-            Job expected = new Job
+            JobEntity expected = new JobEntity
             {
                 Description = jobUpdate.Description,
                 EmployeeId = toBeUpdated.EmployeeId,
@@ -372,7 +372,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         {
             int initialCount = Jobs.Count;
 
-            Job jobUpdate = new Job
+            JobEntity jobUpdate = new JobEntity
             {
                 Description = Guid.NewGuid().ToString("N"),
             };
@@ -385,7 +385,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         [ExpectedException(typeof(AuxeltusSqlException))]
         public async Task UpdateJobAsync_Error_EFCoreContextNull()
         {
-            Job jobUpdate = new Job
+            JobEntity jobUpdate = new JobEntity
             {
                 Description = Guid.NewGuid().ToString("N"),
             };

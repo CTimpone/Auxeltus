@@ -8,7 +8,7 @@ namespace Auxeltus.AccessLayer.Sql
     /// Class <c>Role</c> is a representation of a position somewhere on Earth.
     /// It serves as an EF Core model for the purposes of the Auxeltus data structure.
     /// </summary>
-    public class Role
+    public class RoleEntity
     {
         public int Id { get; set; }
 
@@ -25,12 +25,12 @@ namespace Auxeltus.AccessLayer.Sql
         [Required]
         public int? MaximumSalary { get; set; }
 
-        public List<Job>? Jobs { get; set; }
+        public List<JobEntity>? Jobs { get; set; }
 
         /// <summary>
         /// Modify the relevant underlying values on <c>Role</c> parameters to facilitate EF Core updates.
         /// </summary>
-        internal void Mutate(Role updatedRole)
+        internal void Mutate(RoleEntity updatedRole)
         {
             Title = updatedRole.Title ?? Title;
             Tier = updatedRole.Tier ?? Tier;

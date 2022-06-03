@@ -11,7 +11,7 @@ namespace Auxeltus.AccessLayer.Sql
     /// A <c>Job</c> can be archived to keep the record while removing it from standard access patterns.
     /// It serves as an EF Core model for the purposes of the Auxeltus data structure.
     /// </summary>
-    public class Job
+    public class JobEntity
     {
         public int Id { get; set; }
 
@@ -36,17 +36,17 @@ namespace Auxeltus.AccessLayer.Sql
 
         [Required]
         public int RoleId { get; set; }
-        public Role Role { get; set; }
+        public RoleEntity Role { get; set; }
 
         public bool? Remote { get; set; }
 
         public int? LocationId { get; set; }
-        public Location? Location { get; set; }
+        public LocationEntity? Location { get; set; }
 
         /// <summary>
         /// Modify the relevant underlying values on <c>Job</c> parameters to facilitate EF Core updates.
         /// </summary>
-        internal void Mutate(Job otherJob)
+        internal void Mutate(JobEntity otherJob)
         {
             Description = otherJob.Description ?? Description;
             Salary = otherJob.Salary ?? Salary;

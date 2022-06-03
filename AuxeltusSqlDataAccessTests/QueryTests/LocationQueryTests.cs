@@ -36,13 +36,13 @@ namespace AuxeltusSqlDataAccessTests
         [TestCategory(TestCategoryConstants.RETRIEVE_LOCATIONS_CATEGORY)]
         public async Task RetrieveLocationsAsync_GetAll()
         {
-            List<Location> locations = await query.RetrieveLocationsAsync(100, 0);
+            List<LocationEntity> locations = await query.RetrieveLocationsAsync(100, 0);
 
             Assert.AreEqual(Locations.Count, locations.Count);
 
-            foreach (Location location in locations)
+            foreach (LocationEntity location in locations)
             {
-                Location matchedLocation = Locations.First(l => l.Id == location.Id);
+                LocationEntity matchedLocation = Locations.First(l => l.Id == location.Id);
 
                 CompareLocations(matchedLocation, location);
             }
@@ -54,13 +54,13 @@ namespace AuxeltusSqlDataAccessTests
         {
             int maxReturns = 2;
 
-            List<Location> locations = await query.RetrieveLocationsAsync(maxReturns, 0);
+            List<LocationEntity> locations = await query.RetrieveLocationsAsync(maxReturns, 0);
 
             Assert.AreEqual(maxReturns, locations.Count);
 
-            foreach (Location location in locations)
+            foreach (LocationEntity location in locations)
             {
-                Location matchedLocation = Locations.First(l => l.Id == location.Id);
+                LocationEntity matchedLocation = Locations.First(l => l.Id == location.Id);
 
                 CompareLocations(matchedLocation, location);
             }
@@ -73,13 +73,13 @@ namespace AuxeltusSqlDataAccessTests
             int maxReturns = 100;
             int startIndex = 2;
 
-            List<Location> locations = await query.RetrieveLocationsAsync(maxReturns, startIndex);
+            List<LocationEntity> locations = await query.RetrieveLocationsAsync(maxReturns, startIndex);
 
             Assert.AreEqual(Locations.Count - (startIndex - 1), locations.Count);
 
-            foreach (Location location in locations)
+            foreach (LocationEntity location in locations)
             {
-                Location matchedLocation = Locations.First(l => l.Id == location.Id);
+                LocationEntity matchedLocation = Locations.First(l => l.Id == location.Id);
 
                 CompareLocations(matchedLocation, location);
             }
@@ -91,7 +91,7 @@ namespace AuxeltusSqlDataAccessTests
         {
             int maxReturns = 100;
             int startIndex = 100;
-            List<Location> locations = await query.RetrieveLocationsAsync(maxReturns, startIndex);
+            List<LocationEntity> locations = await query.RetrieveLocationsAsync(maxReturns, startIndex);
 
             Assert.AreEqual(0, locations.Count);
         }
@@ -107,7 +107,7 @@ namespace AuxeltusSqlDataAccessTests
 
             int maxReturns = 100;
             int startIndex = 0;
-            List<Location> locations = await query.RetrieveLocationsAsync(maxReturns, startIndex);
+            List<LocationEntity> locations = await query.RetrieveLocationsAsync(maxReturns, startIndex);
 
             Assert.AreEqual(0, locations.Count);
         }

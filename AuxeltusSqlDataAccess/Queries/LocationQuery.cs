@@ -16,7 +16,7 @@ namespace Auxeltus.AccessLayer.Sql
         private readonly ILogger _logger;
         private readonly AuxeltusSqlContext _context;
 
-        public LocationQuery(ILogger logger, AuxeltusSqlContext context)
+        public LocationQuery(ILogger<LocationQuery> logger, AuxeltusSqlContext context)
         {
             _logger = logger;
             _context = context;
@@ -27,14 +27,14 @@ namespace Auxeltus.AccessLayer.Sql
         /// Only returns a subset (default of 256) of the records, based on the <c>maxReturns</c> parameter.
         /// The <c>startIndex</c> parameter can be used to facilitate paging.
         /// </summary>
-        public async Task<List<Location>> RetrieveLocationsAsync(int? maxReturns, int? startIndex)
+        public async Task<List<LocationEntity>> RetrieveLocationsAsync(int? maxReturns, int? startIndex)
         {
             maxReturns ??= 256;
             startIndex ??= 0;
 
             try
             {
-                List<Location> locations = await _context.Locations
+                List<LocationEntity> locations = await _context.Locations
                     .AsNoTracking()
                     .Where(location => location.Id >= startIndex)
                     .OrderBy(location => location.Id)

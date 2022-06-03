@@ -15,7 +15,7 @@ namespace Auxeltus.AccessLayer.Sql
         private readonly ILogger _logger;
         private readonly AuxeltusSqlContext _context;
 
-        public JobsCommand(ILogger logger, AuxeltusSqlContext context)
+        public JobsCommand(ILogger<JobsCommand> logger, AuxeltusSqlContext context)
         {
             _logger = logger;
             _context = context;
@@ -25,7 +25,7 @@ namespace Auxeltus.AccessLayer.Sql
         /// Adds a new <c>Job</c> to the data structure.
         /// Input object should not include an Id (as it is auto-generated as the primary key).
         /// </summary>
-        public async Task CreateJobAsync(Job job)
+        public async Task CreateJobAsync(JobEntity job)
         {
             try
             {
@@ -47,11 +47,11 @@ namespace Auxeltus.AccessLayer.Sql
         /// <summary>
         /// Updates an existing <c>Job</c> on the data structure.
         /// </summary>
-        public async Task UpdateJobAsync(int jobId, Job updatedJob)
+        public async Task UpdateJobAsync(int jobId, JobEntity updatedJob)
         {
             try
             {
-                Job foundJob = await _context.Jobs
+                JobEntity foundJob = await _context.Jobs
                     .FirstAsync(job => job.Id == jobId)
                     .ConfigureAwait(false);
 
@@ -75,7 +75,7 @@ namespace Auxeltus.AccessLayer.Sql
         {
             try
             {
-                Job foundJob = await _context.Jobs
+                JobEntity foundJob = await _context.Jobs
                     .FirstAsync(job => job.Id == jobId)
                     .ConfigureAwait(false);
 

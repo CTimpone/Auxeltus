@@ -11,17 +11,17 @@ namespace Auxeltus.AccessLayer.Sql
         /// <summary>
         /// Retrieves a <c>Job</c> using the given primaryId of the object.
         /// </summary>
-        public Task<Job> RetrieveJobAsync(int jobId);
+        public Task<JobEntity> RetrieveJobAsync(int jobId);
 
         /// <summary>
         /// Retrieves all <c>Job</c>s that report to the same <c>Employee</c>.
         /// </summary>
-        public Task<List<Job>> RetrieveJobsReportingToAsync(int employeeId);
+        public Task<List<JobEntity>> RetrieveJobsReportingToAsync(int employeeId);
 
         /// <summary>
         /// Retrieves a set of <c>Job</c>s that are active and do not have an employee set.
         /// </summary>
 
-        public Task<List<Job>> RetrieveOpenJobsAsync(int? maxReturn, int? startIndex);
+        public Task<List<JobEntity>> RetrieveOpenJobsAsync(int? maxReturn, int? startIndex);
     }
 }

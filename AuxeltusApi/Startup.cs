@@ -2,22 +2,15 @@ using Auxeltus.AccessLayer.Sql;
 using Auxeltus.Api.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Core;
 using Serilog.Enrichers.Sensitive;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Auxeltus.Api
 {
@@ -44,8 +37,11 @@ namespace Auxeltus.Api
         {
             services.AddDbContext<AuxeltusSqlContext>(options =>
                 options.UseSqlServer(Environment.GetEnvironmentVariable("Auxeltus_SQLConnectionString")));
+
+            services.AddTransient<IRoleCommand, RoleCommand>();
+            services.AddTransient<IRoleQuery, RoleQuery>();
+
             services.AddControllers().AddNewtonsoftJson();
-            ;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

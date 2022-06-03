@@ -36,7 +36,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateRoleAsync_Success()
         {
             Random rnd = new Random();
-            Role newRole = new Role
+            RoleEntity newRole = new RoleEntity
             {
                 Title = Guid.NewGuid().ToString("N"),
                 MaximumSalary = rnd.Next(3001, 6000),
@@ -46,7 +46,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
 
             await command.CreateRoleAsync(newRole);
 
-            Role addedRole = context.Roles.First(r => r.Title == newRole.Title);
+            RoleEntity addedRole = context.Roles.First(r => r.Title == newRole.Title);
 
             Assert.IsNotNull(addedRole.Id);
             CompareRoles(newRole, addedRole);
@@ -58,7 +58,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateRoleAsync_Error_DuplicateTitle()
         {
             Random rnd = new Random();
-            Role newRole = new Role
+            RoleEntity newRole = new RoleEntity
             {
                 Title = Roles.First().Title,
                 MaximumSalary = rnd.Next(3001, 6000),
@@ -85,7 +85,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task CreateRoleAsync_Error_NullEFCoreContext()
         {
             Random rnd = new Random();
-            Role newRole = new Role
+            RoleEntity newRole = new RoleEntity
             {
                 Title = Guid.NewGuid().ToString("N"),
                 MaximumSalary = rnd.Next(3001, 6000),
@@ -103,7 +103,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         {
             int initialCount = Roles.Count;
 
-            Role toBeDeleted = Roles[4];
+            RoleEntity toBeDeleted = Roles[4];
             await command.DeleteRoleAsync(toBeDeleted.Id);
 
             Assert.IsFalse(context.Roles.Any(r => r.Id == toBeDeleted.Id));
@@ -142,7 +142,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task UpdateRoleAsync_AllFields()
         {
             Random rnd = new Random();
-            Role roleUpdate = new Role
+            RoleEntity roleUpdate = new RoleEntity
             {
                 Title = Guid.NewGuid().ToString("N"),
                 MaximumSalary = rnd.Next(3001, 6000),
@@ -152,11 +152,11 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
 
             int initialCount = Roles.Count;
 
-            Role toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
+            RoleEntity toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
 
             await command.UpdateRoleAsync(toBeUpdated.Id, roleUpdate);
 
-            Role finalRole = context.Roles.First(r => r.Title == roleUpdate.Title);
+            RoleEntity finalRole = context.Roles.First(r => r.Title == roleUpdate.Title);
 
             Assert.AreEqual(toBeUpdated.Id, finalRole.Id);
             CompareRoles(roleUpdate, finalRole);
@@ -167,20 +167,20 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task UpdateRoleAsync_TitleOnly()
         {
             Random rnd = new Random();
-            Role roleUpdate = new Role
+            RoleEntity roleUpdate = new RoleEntity
             {
                 Title = Guid.NewGuid().ToString("N"),
             };
 
             int initialCount = Roles.Count;
 
-            Role toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
+            RoleEntity toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
 
             await command.UpdateRoleAsync(toBeUpdated.Id, roleUpdate);
 
-            Role finalRole = context.Roles.First(r => r.Title == roleUpdate.Title);
+            RoleEntity finalRole = context.Roles.First(r => r.Title == roleUpdate.Title);
 
-            Role expected = new Role
+            RoleEntity expected = new RoleEntity
             {
                 Title = roleUpdate.Title,
                 Tier = toBeUpdated.Tier,
@@ -197,20 +197,20 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task UpdateRoleAsync_TierOnly()
         {
             Random rnd = new Random();
-            Role roleUpdate = new Role
+            RoleEntity roleUpdate = new RoleEntity
             {
                 Tier = rnd.Next(1, 10)
             };
 
             int initialCount = Roles.Count;
 
-            Role toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
+            RoleEntity toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
 
             await command.UpdateRoleAsync(toBeUpdated.Id, roleUpdate);
 
-            Role finalRole = context.Roles.First(r => r.Title == toBeUpdated.Title);
+            RoleEntity finalRole = context.Roles.First(r => r.Title == toBeUpdated.Title);
 
-            Role expected = new Role
+            RoleEntity expected = new RoleEntity
             {
                 Title = toBeUpdated.Title,
                 Tier = roleUpdate.Tier,
@@ -227,20 +227,20 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task UpdateRoleAsync_MaximumSalaryOnly()
         {
             Random rnd = new Random();
-            Role roleUpdate = new Role
+            RoleEntity roleUpdate = new RoleEntity
             {
                 MaximumSalary = rnd.Next(3001, 6000),
             };
 
             int initialCount = Roles.Count;
 
-            Role toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
+            RoleEntity toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
 
             await command.UpdateRoleAsync(toBeUpdated.Id, roleUpdate);
 
-            Role finalRole = context.Roles.First(r => r.Title == toBeUpdated.Title);
+            RoleEntity finalRole = context.Roles.First(r => r.Title == toBeUpdated.Title);
 
-            Role expected = new Role
+            RoleEntity expected = new RoleEntity
             {
                 Title = toBeUpdated.Title,
                 Tier = toBeUpdated.Tier,
@@ -257,20 +257,20 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task UpdateRoleAsync_MinimumSalaryOnly()
         {
             Random rnd = new Random();
-            Role roleUpdate = new Role
+            RoleEntity roleUpdate = new RoleEntity
             {
                 MinimumSalary = rnd.Next(3001, 6000),
             };
 
             int initialCount = Roles.Count;
 
-            Role toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
+            RoleEntity toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
 
             await command.UpdateRoleAsync(toBeUpdated.Id, roleUpdate);
 
-            Role finalRole = context.Roles.First(r => r.Title == toBeUpdated.Title);
+            RoleEntity finalRole = context.Roles.First(r => r.Title == toBeUpdated.Title);
 
-            Role expected = new Role
+            RoleEntity expected = new RoleEntity
             {
                 Title = toBeUpdated.Title,
                 Tier = toBeUpdated.Tier,
@@ -287,12 +287,12 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         [ExpectedException(typeof(AuxeltusSqlException))]
         public async Task UpdateRoleAsync_Error_DuplicateTitle()
         {
-            Role roleUpdate = new Role
+            RoleEntity roleUpdate = new RoleEntity
             {
                 Title = Roles[1].Title,
             };
 
-            Role toBeUpdated = Roles[0];
+            RoleEntity toBeUpdated = Roles[0];
 
             await command.UpdateRoleAsync(toBeUpdated.Id, roleUpdate);
         }
@@ -303,7 +303,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
         public async Task UpdateRoleAsync_Error_EFCoreContextNull()
         {
             Random rnd = new Random();
-            Role roleUpdate = new Role
+            RoleEntity roleUpdate = new RoleEntity
             {
                 Title = Guid.NewGuid().ToString("N"),
                 MaximumSalary = rnd.Next(3001, 6000),
@@ -313,7 +313,7 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
 
             int initialCount = Roles.Count;
 
-            Role toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
+            RoleEntity toBeUpdated = Roles[rnd.Next(0, initialCount - 1)];
 
             command = new RoleCommand(testLogger, null);
             await command.UpdateRoleAsync(toBeUpdated.Id, roleUpdate);

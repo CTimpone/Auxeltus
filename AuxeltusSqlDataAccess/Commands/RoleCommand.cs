@@ -14,7 +14,7 @@ namespace Auxeltus.AccessLayer.Sql
         private readonly ILogger _logger;
         private readonly AuxeltusSqlContext _context;
 
-        public RoleCommand(ILogger logger, AuxeltusSqlContext context)
+        public RoleCommand(ILogger<RoleCommand> logger, AuxeltusSqlContext context)
         {
             _logger = logger;
             _context = context;
@@ -24,7 +24,7 @@ namespace Auxeltus.AccessLayer.Sql
         /// Adds a new <c>Role</c> to the data structure.
         /// Input object should not include an Id (as it is auto-generated as the primary key).
         /// </summary>
-        public async Task CreateRoleAsync(Role role)
+        public async Task CreateRoleAsync(RoleEntity role)
         {
             try
             {
@@ -46,11 +46,11 @@ namespace Auxeltus.AccessLayer.Sql
         /// <summary>
         /// Updates an existing <c>Role</c> on the data structure.
         /// </summary>
-        public async Task UpdateRoleAsync(int roleId, Role updatedRole)
+        public async Task UpdateRoleAsync(int roleId, RoleEntity updatedRole)
         {
             try
             {
-                Role foundRole = await _context.Roles
+                RoleEntity foundRole = await _context.Roles
                     .FirstAsync(role => role.Id == roleId)
                     .ConfigureAwait(false);
 
@@ -74,7 +74,7 @@ namespace Auxeltus.AccessLayer.Sql
         {
             try
             {
-                Role foundRole = await _context.Roles
+                RoleEntity foundRole = await _context.Roles
                     .FirstAsync(role => role.Id == roleId)
                     .ConfigureAwait(false);
 

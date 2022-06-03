@@ -8,7 +8,7 @@ namespace Auxeltus.AccessLayer.Sql
     /// Class <c>Location</c> is a representation of a position somewhere on Earth.
     /// It serves as an EF Core model for the purposes of the Auxeltus data structure.
     /// </summary>
-    public class Location
+    public class LocationEntity
     {
         public int Id { get; set; }
 
@@ -37,12 +37,12 @@ namespace Auxeltus.AccessLayer.Sql
         /// The full list of <c>Job</c>s that are located at the <c>Location</c>.
         /// Relates to the EF Core data model, in which a <c>Job</c> may have a foreign key pointing to a <c>Location</c>.
         /// </summary>
-        public List<Job>? Jobs { get; set; }
+        public List<JobEntity>? Jobs { get; set; }
 
         /// <summary>
         /// Modify the relevant underlying values on <c>Location</c> parameters to facilitate EF Core updates.
         /// </summary>
-        internal void Mutate(Location updatedLocation)
+        internal void Mutate(LocationEntity updatedLocation)
         {
             Name = updatedLocation.Name ?? Name;
             Latitude = updatedLocation.Latitude ?? Latitude;
@@ -53,7 +53,7 @@ namespace Auxeltus.AccessLayer.Sql
         /// The <c>DistanceBetween</c> method calculates the distance between two location objects, returning the value in kilometers.
         /// In the event that one or more coordinates is not populated in the locations, an <c>ArgumentException</c> will be thrown.
         /// </summary>
-        public double DistanceBetween(Location otherLocation)
+        public double DistanceBetween(LocationEntity otherLocation)
         {
             if (Latitude == null || Longitude == null || otherLocation.Latitude == null || otherLocation.Longitude == null)
             {

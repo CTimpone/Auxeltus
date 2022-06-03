@@ -16,7 +16,7 @@ namespace Auxeltus.AccessLayer.Sql
         private readonly ILogger _logger;
         private readonly AuxeltusSqlContext _context;
 
-        public RoleQuery(ILogger logger, AuxeltusSqlContext context)
+        public RoleQuery(ILogger<RoleQuery> logger, AuxeltusSqlContext context)
         {
             _logger = logger;
             _context = context;
@@ -27,14 +27,14 @@ namespace Auxeltus.AccessLayer.Sql
         /// Only returns a subset (default of 256) of the records, based on the <c>maxReturns</c> parameter.
         /// The <c>startIndex</c> parameter can be used to facilitate paging.
         /// </summary>
-        public async Task<List<Role>> RetrieveRolesAsync(int? maxReturns, int? startIndex)
+        public async Task<List<RoleEntity>> RetrieveRolesAsync(int? maxReturns, int? startIndex)
         {
             maxReturns ??= 256;
             startIndex ??= 0;
 
             try
             {
-                List<Role> roles = await _context.Roles
+                List<RoleEntity> roles = await _context.Roles
                     .AsNoTracking()
                     .Where(role => role.Id >= startIndex)
                     .OrderBy(job => job.Id)

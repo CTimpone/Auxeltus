@@ -14,7 +14,7 @@ namespace Auxeltus.AccessLayer.Sql
         private readonly ILogger _logger;
         private readonly AuxeltusSqlContext _context;
 
-        public LocationCommand(ILogger logger, AuxeltusSqlContext context)
+        public LocationCommand(ILogger<LocationCommand> logger, AuxeltusSqlContext context)
         {
             _logger = logger;
             _context = context;
@@ -24,7 +24,7 @@ namespace Auxeltus.AccessLayer.Sql
         /// Adds a new <c>Location</c> to the data structure.
         /// Input object should not include an Id (as it is auto-generated as the primary key).
         /// </summary>
-        public async Task CreateLocationAsync(Location location)
+        public async Task CreateLocationAsync(LocationEntity location)
         {
             try
             {
@@ -46,11 +46,11 @@ namespace Auxeltus.AccessLayer.Sql
         /// <summary>
         /// Updates an existing <c>Location</c> on the data structure.
         /// </summary>
-        public async Task UpdateLocationAsync(int locationId, Location updatedLocation)
+        public async Task UpdateLocationAsync(int locationId, LocationEntity updatedLocation)
         {
             try
             {
-                Location foundLocation = await _context.Locations
+                LocationEntity foundLocation = await _context.Locations
                     .FirstAsync(loc => loc.Id == locationId)
                     .ConfigureAwait(false);
 
@@ -74,7 +74,7 @@ namespace Auxeltus.AccessLayer.Sql
         {
             try
             {
-                Location foundLocation = await _context.Locations
+                LocationEntity foundLocation = await _context.Locations
                     .FirstAsync(loc => loc.Id == locationId)
                     .ConfigureAwait(false);
 

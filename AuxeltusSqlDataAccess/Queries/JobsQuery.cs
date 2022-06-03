@@ -16,7 +16,7 @@ namespace Auxeltus.AccessLayer.Sql
         private readonly ILogger _logger;
         private readonly AuxeltusSqlContext _context;
 
-        public JobsQuery(ILogger logger, AuxeltusSqlContext context)
+        public JobsQuery(ILogger<JobsQuery> logger, AuxeltusSqlContext context)
         {
             _logger = logger;
             _context = context;
@@ -25,11 +25,11 @@ namespace Auxeltus.AccessLayer.Sql
         /// <summary>
         /// It utilizes asynchronous EF Core methodology to retrieve a <c>Job</c>s from the SQL database using the primary key.
         /// </summary>
-        public async Task<Job> RetrieveJobAsync(int jobId)
+        public async Task<JobEntity> RetrieveJobAsync(int jobId)
         {
             try
             {
-                Job foundJob = await _context.Jobs
+                JobEntity foundJob = await _context.Jobs
                     .AsNoTracking()
                     .Include(job => job.Role)
                     .Include(job => job.Location)
@@ -49,11 +49,11 @@ namespace Auxeltus.AccessLayer.Sql
         /// <summary>
         /// Retrieves all <c>Job</c>s that report to a specific employee.
         /// </summary>
-        public async Task<List<Job>> RetrieveJobsReportingToAsync(int employeeId)
+        public async Task<List<JobEntity>> RetrieveJobsReportingToAsync(int employeeId)
         {
             try
             {
-                List<Job> reports = await _context.Jobs
+                List<JobEntity> reports = await _context.Jobs
                     .AsNoTracking()
                     .Include(job => job.Role)
                     .Include(job => job.Location)
@@ -77,14 +77,14 @@ namespace Auxeltus.AccessLayer.Sql
         /// Only returns a subset (default of 25) of found <c>Job</c>s, based on the <c>maxReturns</c> parameter.
         /// The <c>startIndex</c> parameter can be used to facilitate paging.
         /// </summary>
-        public async Task<List<Job>> RetrieveOpenJobsAsync(int? maxReturns, int? startIndex)
+        public async Task<List<JobEntity>> RetrieveOpenJobsAsync(int? maxReturns, int? startIndex)
         {
             maxReturns ??= 25;
             startIndex ??= 0;
 
             try
             {
-                List<Job> reports = await _context.Jobs
+                List<JobEntity> reports = await _context.Jobs
                     .AsNoTracking()
                     .Include(job => job.Role)
                     .Include(job => job.Location)

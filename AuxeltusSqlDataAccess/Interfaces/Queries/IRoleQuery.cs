@@ -12,6 +12,6 @@ namespace Auxeltus.AccessLayer.Sql
         /// Retrieves a subset of <c>Role</c> objects from the data store.
         /// By default will return the first 256 <c>Role</c>s.
         /// </summary>
-        public Task<List<Role>> RetrieveRolesAsync(int? maxReturn, int? startIndex);
+        public Task<List<RoleEntity>> RetrieveRolesAsync(int? maxReturn, int? startIndex);
     }
 }
