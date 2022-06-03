@@ -44,7 +44,8 @@ namespace Auxeltus.Api
         {
             services.AddDbContext<AuxeltusSqlContext>(options =>
                 options.UseSqlServer(Environment.GetEnvironmentVariable("Auxeltus_SQLConnectionString")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+            ;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
