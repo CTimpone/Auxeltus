@@ -3,7 +3,9 @@ using Auxeltus.Api.Interfaces;
 using Auxeltus.Api.Models;
 using Auxeltus.Api.Models.Exposed;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Auxeltus.Api
@@ -21,24 +23,51 @@ namespace Auxeltus.Api
             _roleQuery = roleQuery;
         }
 
-        public Task<AuxeltusObjectResponse<Role>> CreateRoleAsync(Role newRole)
+        public async Task<AuxeltusObjectResponse<Role>> CreateRoleAsync(Role newRole)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<AuxeltusObjectResponse> DeleteRoleAsync(int roleId)
+        public async Task<AuxeltusObjectResponse> DeleteRoleAsync(int roleId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<AuxeltusObjectResponse<List<Role>>> RetrieveRolesAsync(int? maxReturn, int? startIndex)
+        public async Task<AuxeltusObjectResponse<List<Role>>> RetrieveRolesAsync(int? maxReturn, int? startIndex)
+        {
+            var response = new AuxeltusObjectResponse<List<Role>>();
+
+            List<RoleEntity> internalRoles = await _roleQuery.RetrieveRolesAsync(maxReturn, startIndex).ConfigureAwait(false);
+
+            if (internalRoles == null || internalRoles.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                response.Success = true;
+                response.Content = MapRoleEntities(internalRoles);
+
+                return response;
+            }
+        }
+
+        public async Task<AuxeltusObjectResponse<Role>> UpdateRoleAsync(int roleId, Role role)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<AuxeltusObjectResponse<Role>> UpdateRoleAsync(int roleId, Role role)
+        private List<Role> MapRoleEntities(List<RoleEntity> internalRoles)
         {
-            throw new System.NotImplementedException();
+            return internalRoles.Select(r => new Role
+            {
+                Id = r.Id,
+                Title = r.Title,
+                Tier = r.Tier.GetValueOrDefault(),
+                MaximumSalary = r.MaximumSalary.GetValueOrDefault(),
+                MinimumSalary = r.MinimumSalary.GetValueOrDefault()
+            }).ToList();
         }
+
     }
 }

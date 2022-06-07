@@ -23,9 +23,30 @@ namespace Auxeltus.Api
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromQuery] int? startIndex, [FromQuery] int? maxReturns)
         {
-            return new OkObjectResult("tempValue");
+            try
+            {
+                var response = await _repository.RetrieveRolesAsync(startIndex, maxReturns).ConfigureAwait(false);
+                
+                if (response == null)
+                {
+                    return NoContent();
+                }
+                else if (!response.Success)
+                {
+                    return new BadRequestObjectResult(response);
+                }
+                else
+                {
+                    return new OkObjectResult(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception thrown in {nameof(RoleController)}.{nameof(Index)}");
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
