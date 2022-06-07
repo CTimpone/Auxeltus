@@ -9,5 +9,6 @@ namespace Auxeltus.Api.Models
         public ErrorType Type { get; set; }
         public int Code { get; set; }
         public string Message { get; set; }
+        public string Field { get; set; }
     }
 }

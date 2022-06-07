@@ -1,5 +1,7 @@
 ﻿using Auxeltus.AccessLayer.Sql;
+using Auxeltus.Api.Attributes;
 using Auxeltus.Api.Interfaces;
+using Auxeltus.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace Auxeltus.Api
 {
-    [ApiController]
+    [Controller]
     [Route("roles")]
+    [ModelValidation]
     public class RoleController : ControllerBase
     {
         private readonly ILogger<RoleController> _logger;
@@ -51,7 +54,7 @@ namespace Auxeltus.Api
 
         [HttpPost]
         [Route("new")]
-        public IActionResult Create()
+        public IActionResult Create([FromBody] Role role)
         {
             return new NoContentResult();
         }

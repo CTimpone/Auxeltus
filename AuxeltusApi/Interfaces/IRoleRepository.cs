@@ -1,5 +1,4 @@
 ﻿using Auxeltus.Api.Models;
-using Auxeltus.Api.Models.Exposed;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

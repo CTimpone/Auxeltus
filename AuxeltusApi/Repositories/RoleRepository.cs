@@ -1,7 +1,6 @@
 ﻿using Auxeltus.AccessLayer.Sql;
 using Auxeltus.Api.Interfaces;
 using Auxeltus.Api.Models;
-using Auxeltus.Api.Models.Exposed;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
