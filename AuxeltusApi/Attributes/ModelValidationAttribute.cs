@@ -24,21 +24,14 @@ namespace Auxeltus.Api.Attributes
         {
             AuxeltusObjectResponse rsp = new AuxeltusObjectResponse
             {
-                Success = false,
-                Errors = new List<Error>()
+                Success = false
             };
 
             foreach (string key in state.Keys)
             {
                 foreach (var error in state[key].Errors)
                 {
-                    rsp.Errors.Add(new Error
-                    {
-                        Field = key,
-                        Message = error.ErrorMessage,
-                        Type = ErrorType.Error,
-                        Code = MapErrorCode(error.ErrorMessage)
-                    });
+                    rsp.AddError(ErrorType.Error, MapErrorCode(error.ErrorMessage), error.ErrorMessage, key);
                 }
             }
 
@@ -49,10 +42,10 @@ namespace Auxeltus.Api.Attributes
         {
             //To be further refined
             if (error.Contains("required", StringComparison.OrdinalIgnoreCase)) {
-                return 1;
+                return ErrorConstants.REQUIRED_CODE;
             } else
             {
-                return 2;
+                return ErrorConstants.MODEL_VALIDATION_CODE;
             }
         }
     }

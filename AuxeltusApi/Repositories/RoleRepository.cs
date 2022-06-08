@@ -1,4 +1,5 @@
 ﻿using Auxeltus.AccessLayer.Sql;
+using Auxeltus.Api.Extensions;
 using Auxeltus.Api.Interfaces;
 using Auxeltus.Api.Models;
 using Microsoft.Extensions.Logging;
@@ -49,15 +50,10 @@ namespace Auxeltus.Api
             }
             catch (Exception ex)
             {
-                if (ex.InnerException?.InnerException?.Message?.Contains("IX_Roles_Title") == true)
+                if (ex.Contains(ErrorConstants.ROLE_TITLE_INDEX))
                 {
-                    response.AddError(new Error
-                    {
-                        Code = 3,
-                        Field = "Title",
-                        Message = "Title must not match a pre-existing role",
-                        Type = ErrorType.Error
-                    });
+                    response.AddError(ErrorType.Error, ErrorConstants.UNIQUENESS_CODE, 
+                        "Title must not match the title of a pre-existing role", nameof(Role.Title));
 
                     return response;
                 }
