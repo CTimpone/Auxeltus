@@ -14,14 +14,14 @@ namespace AuxeltusSqlDataAccessTests
     public class RoleQueryTests: TestBase
     {
         public AuxeltusSqlContext context;
-        public ILogger testLogger;
+        public ILogger<RoleQuery> testLogger;
         public IRoleQuery query;
 
         [TestInitialize]
         public void Initialize()
         {
             context = GenerateTestDataContext();
-            testLogger = NullLogger.Instance;
+            testLogger = NullLogger<RoleQuery>.Instance;
             query = new RoleQuery(testLogger, context);
         }
 

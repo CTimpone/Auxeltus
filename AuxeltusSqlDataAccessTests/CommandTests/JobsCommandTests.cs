@@ -13,14 +13,14 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
     public class JobsCommandTests: TestBase
     {
         public AuxeltusSqlContext context;
-        public ILogger testLogger;
+        public ILogger<JobsCommand> testLogger;
         public IJobsCommand command;
 
         [TestInitialize]
         public void Initialize()
         {
             context = GenerateTestDataContext();
-            testLogger = NullLogger.Instance;
+            testLogger = NullLogger<JobsCommand>.Instance;
             command = new JobsCommand(testLogger, context);
         }
 

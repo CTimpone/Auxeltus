@@ -5,6 +5,7 @@ namespace Auxeltus.Api.Models
     public class Role
     {
         public int? Id { get; set; }
+
         [Required]
         [MinLength(1)]
         [MaxLength(100)]

@@ -14,14 +14,14 @@ namespace AuxeltusSqlDataAccessTests
     public class JobsQueryTests: TestBase
     {
         public AuxeltusSqlContext context;
-        public ILogger testLogger;
+        public ILogger<JobsQuery> testLogger;
         public IJobsQuery query;
 
         [TestInitialize]
         public void Initialize()
         {
             context = GenerateTestDataContext();
-            testLogger = NullLogger.Instance;
+            testLogger = NullLogger<JobsQuery>.Instance;
             query = new JobsQuery(testLogger, context);
         }
 

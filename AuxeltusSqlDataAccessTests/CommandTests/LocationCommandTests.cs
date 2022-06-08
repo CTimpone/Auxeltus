@@ -13,14 +13,14 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
     public class LocationCommandTests: TestBase
     {
         public AuxeltusSqlContext context;
-        public ILogger testLogger;
+        public ILogger<LocationCommand> testLogger;
         public ILocationCommand command;
 
         [TestInitialize]
         public void Initialize()
         {
             context = GenerateTestDataContext();
-            testLogger = NullLogger.Instance;
+            testLogger = NullLogger<LocationCommand>.Instance;
             command = new LocationCommand(testLogger, context);
         }
 

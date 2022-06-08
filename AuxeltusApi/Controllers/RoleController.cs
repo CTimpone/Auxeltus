@@ -54,9 +54,28 @@ namespace Auxeltus.Api
 
         [HttpPost]
         [Route("new")]
-        public IActionResult Create([FromBody] Role role)
+        public async Task<IActionResult> Create([FromBody] Role role)
         {
-            return new NoContentResult();
+            try
+            {
+                var response = await _repository.CreateRoleAsync(role).ConfigureAwait(false);
+
+                if (response.Success)
+                {
+                    return StatusCode(201);
+                }
+                else
+                {
+                    return new BadRequestObjectResult(response);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception thrown in {nameof(RoleController)}.{nameof(Create)}");
+                return StatusCode(500);
+            }
         }
 
         [HttpPatch]

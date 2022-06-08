@@ -24,7 +24,46 @@ namespace Auxeltus.Api
 
         public async Task<AuxeltusObjectResponse<Role>> CreateRoleAsync(Role newRole)
         {
-            throw new System.NotImplementedException();
+            var response = new AuxeltusObjectResponse<Role>();
+
+            if (newRole.Id.GetValueOrDefault() != 0)
+            {
+                response.AddError(new Error
+                {
+                    Code = 1,
+                    Field = "Id",
+                    Message = "Id must be absent when creating a new Role",
+                    Type = ErrorType.Error
+                });
+
+                return response;
+            }
+
+            try
+            {
+                await _roleCommand.CreateRoleAsync(MapToRoleEntity(newRole)).ConfigureAwait(false);
+
+                response.Success = true;
+
+                return response;   
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException?.InnerException?.Message?.Contains("IX_Roles_Title") == true)
+                {
+                    response.AddError(new Error
+                    {
+                        Code = 3,
+                        Field = "Title",
+                        Message = "Title must not match a pre-existing role",
+                        Type = ErrorType.Error
+                    });
+
+                    return response;
+                }
+                
+                throw;
+            }
         }
 
         public async Task<AuxeltusObjectResponse> DeleteRoleAsync(int roleId)
@@ -58,15 +97,31 @@ namespace Auxeltus.Api
 
         private List<Role> MapRoleEntities(List<RoleEntity> internalRoles)
         {
-            return internalRoles.Select(r => new Role
-            {
-                Id = r.Id,
-                Title = r.Title,
-                Tier = r.Tier.GetValueOrDefault(),
-                MaximumSalary = r.MaximumSalary.GetValueOrDefault(),
-                MinimumSalary = r.MinimumSalary.GetValueOrDefault()
-            }).ToList();
+            return internalRoles.Select(r => MapRoleEntity(r)).ToList();
         }
 
+        private Role MapRoleEntity(RoleEntity internalRole)
+        {
+            return new Role
+            {
+                Id = internalRole.Id,
+                Title = internalRole.Title,
+                Tier = internalRole.Tier.GetValueOrDefault(),
+                MaximumSalary = internalRole.MaximumSalary.GetValueOrDefault(),
+                MinimumSalary = internalRole.MinimumSalary.GetValueOrDefault()
+            };
+        }
+
+        private RoleEntity MapToRoleEntity(Role role)
+        {
+            return new RoleEntity
+            {
+                Id = role.Id.GetValueOrDefault(),
+                Title = role.Title,
+                Tier = role.Tier.GetValueOrDefault(),
+                MaximumSalary= role.MaximumSalary.GetValueOrDefault(),
+                MinimumSalary = role.MinimumSalary.GetValueOrDefault()
+            };
+        }
     }
 }

@@ -14,14 +14,14 @@ namespace AuxeltusSqlDataAccessTests
     public class LocationQueryTests: TestBase
     {
         public AuxeltusSqlContext context;
-        public ILogger testLogger;
+        public ILogger<LocationQuery> testLogger;
         public ILocationQuery query;
 
         [TestInitialize]
         public void Initialize()
         {
             context = GenerateTestDataContext();
-            testLogger = NullLogger.Instance;
+            testLogger = NullLogger<LocationQuery>.Instance;
             query = new LocationQuery(testLogger, context);
         }
 

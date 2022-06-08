@@ -41,7 +41,11 @@ namespace Auxeltus.Api
             services.AddTransient<IRoleCommand, RoleCommand>();
             services.AddTransient<IRoleQuery, RoleQuery>();
 
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

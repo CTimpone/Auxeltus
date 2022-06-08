@@ -13,14 +13,14 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
     public class RoleCommandTests: TestBase
     {
         public AuxeltusSqlContext context;
-        public ILogger testLogger;
+        public ILogger<RoleCommand> testLogger;
         public IRoleCommand command;
 
         [TestInitialize]
         public void Initialize()
         {
             context = GenerateTestDataContext();
-            testLogger = NullLogger.Instance;
+            testLogger = NullLogger<RoleCommand>.Instance;
             command = new RoleCommand(testLogger, context);
         }
 
