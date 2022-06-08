@@ -21,6 +21,7 @@ namespace Auxeltus.Api
         {
             _roleCommand = roleCommand;
             _roleQuery = roleQuery;
+            _logger = logger;
         }
 
         public async Task<AuxeltusObjectResponse<Role>> CreateRoleAsync(Role newRole)
@@ -29,13 +30,8 @@ namespace Auxeltus.Api
 
             if (newRole.Id.GetValueOrDefault() != 0)
             {
-                response.AddError(new Error
-                {
-                    Code = 1,
-                    Field = "Id",
-                    Message = "Id must be absent when creating a new Role",
-                    Type = ErrorType.Error
-                });
+                response.AddError(ErrorType.Error, ErrorConstants.MODEL_VALIDATION_CODE,
+                    "Id must be absent when creating a new Role", nameof(Role.Id));
 
                 return response;
             }
@@ -52,6 +48,8 @@ namespace Auxeltus.Api
             {
                 if (ex.Contains(ErrorConstants.ROLE_TITLE_INDEX))
                 {
+                    _logger.LogError(ex, $"Title uniqueness exception thrown in {nameof(RoleRepository)}.{nameof(CreateRoleAsync)}");
+
                     response.AddError(ErrorType.Error, ErrorConstants.UNIQUENESS_CODE, 
                         "Title must not match the title of a pre-existing role", nameof(Role.Title));
 
