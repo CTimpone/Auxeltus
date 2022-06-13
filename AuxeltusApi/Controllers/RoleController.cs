@@ -52,6 +52,34 @@ namespace Auxeltus.Api
             }
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get([FromRoute] int id)
+        {
+            try
+            {
+                var response = await _repository.RetrieveRoleAsync(id).ConfigureAwait(false);
+
+                if (response == null)
+                {
+                    return NoContent();
+                }
+                else if (!response.Success)
+                {
+                    return new BadRequestObjectResult(response);
+                }
+                else
+                {
+                    return new OkObjectResult(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception thrown in {nameof(RoleController)}.{nameof(Get)}");
+                return StatusCode(500);
+            }
+        }
+
         [HttpPost]
         [Route("new")]
         public async Task<IActionResult> Create([FromBody] Role role)

@@ -65,6 +65,25 @@ namespace Auxeltus.Api
             throw new System.NotImplementedException();
         }
 
+        public async Task<AuxeltusObjectResponse<Role>> RetrieveRoleAsync(int roleId)
+        {
+            var response = new AuxeltusObjectResponse<Role>();
+
+            RoleEntity internalRole = await _roleQuery.RetrieveRoleAsync(roleId).ConfigureAwait(false);
+
+            if (internalRole == null)
+            {
+                return null;
+            }
+            else
+            {
+                response.Success = true;
+                response.Content = MapRoleEntity(internalRole);
+
+                return response;
+            }
+        }
+
         public async Task<AuxeltusObjectResponse<List<Role>>> RetrieveRolesAsync(int? maxReturn, int? startIndex)
         {
             var response = new AuxeltusObjectResponse<List<Role>>();
