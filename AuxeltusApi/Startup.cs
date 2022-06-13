@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Enrichers.Sensitive;
 using Serilog.Events;
@@ -46,6 +47,23 @@ namespace Auxeltus.Api
                 {
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Auxeltus API",
+                    Version = "v1",
+                    Description = "The API that powers the Auxeltus HR platform.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Chris Timpone",
+                        Email = string.Empty,
+                        Url = new Uri("https://github.com/CTimpone/Auxeltus/"),
+                    },
+                });
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -67,6 +85,13 @@ namespace Auxeltus.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auxeltus API V1");
             });
         }
     }
