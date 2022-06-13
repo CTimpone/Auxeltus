@@ -9,6 +9,7 @@
 
         //IRoleQuery Methods
         public const string RETRIEVE_ROLES_CATEGORY = "RetrieveRolesAsyncTest";
+        public const string RETRIEVE_ROLE_CATEGORY = "RetrieveRoleAsyncTest";
 
         //ILocationQuery Methods
         public const string RETRIEVE_LOCATIONS_CATEGORY = "RetrieveLocationsAsyncTest";

@@ -23,7 +23,30 @@ namespace Auxeltus.AccessLayer.Sql
         }
 
         /// <summary>
-        /// It utilizes asynchronous EF Core methodology to retrieve <c>Role</c>s from the SQL database.
+        /// It utilizes asynchronous EF Core methodology to retrieve a single <c>RoleEntity</c> from the SQL database.
+        /// The returned entity will have an Id value that matches the input parameter.
+        /// </summary>
+        public async Task<RoleEntity> RetrieveRoleAsync(int id)
+        {
+            try
+            {
+                RoleEntity role = await _context.Roles
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(role => role.Id == id)
+                    .ConfigureAwait(false);
+
+                return role;
+            }
+            catch (Exception ex)
+            {
+                string message = $"Exception thrown in {nameof(RoleQuery)}.{nameof(RetrieveRoleAsync)}";
+                _logger.LogError(ex, message);
+                throw new AuxeltusSqlException(message, ex);
+            }
+        }
+
+        /// <summary>
+        /// It utilizes asynchronous EF Core methodology to retrieve <c>RoleEntity</c>s from the SQL database.
         /// Only returns a subset (default of 256) of the records, based on the <c>maxReturns</c> parameter.
         /// The <c>startIndex</c> parameter can be used to facilitate paging.
         /// </summary>

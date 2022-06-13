@@ -9,9 +9,15 @@ namespace Auxeltus.AccessLayer.Sql
     public interface IRoleQuery
     {
         /// <summary>
-        /// Retrieves a subset of <c>Role</c> objects from the data store.
-        /// By default will return the first 256 <c>Role</c>s.
+        /// Retrieves a subset of <c>RoleEntity</c> objects from the data store.
+        /// By default will return the first 256 <c>RoleEntity</c>s.
         /// </summary>
         public Task<List<RoleEntity>> RetrieveRolesAsync(int? maxReturn, int? startIndex);
+
+        /// <summary>
+        /// Retrieves a single <c>RoleEntity</c> object from the data store that matches the id input parameter.
+        /// </summary>
+        public Task<RoleEntity> RetrieveRoleAsync(int id);
+
     }
 }

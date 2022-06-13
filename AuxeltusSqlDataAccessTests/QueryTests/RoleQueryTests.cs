@@ -33,6 +33,42 @@ namespace AuxeltusSqlDataAccessTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLE_CATEGORY)]
+        public async Task RetrieveRoleAsync_Success()
+        {
+            int id = 1;
+            RoleEntity role = await query.RetrieveRoleAsync(id);
+
+            Assert.IsNotNull(role);
+
+            RoleEntity matchingRole = Roles.First(r => r.Id == id);
+
+            CompareRoles(matchingRole, role);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLE_CATEGORY)]
+        public async Task RetrieveRoleAsync_NoMatch()
+        {
+            int id = 1000;
+            RoleEntity role = await query.RetrieveRoleAsync(id);
+
+            Assert.IsNull(role);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryConstants.RETRIEVE_ROLE_CATEGORY)]
+        [ExpectedException(typeof(AuxeltusSqlException))]
+        public async Task RetrieveRoleAsync_Error_EFCoreContextThrows()
+        {
+            int id = 1;
+
+            query = new RoleQuery(testLogger, null);
+            await query.RetrieveRoleAsync(id);
+        }
+
+
+        [TestMethod]
         [TestCategory(TestCategoryConstants.RETRIEVE_ROLES_CATEGORY)]
         public async Task RetrieveRolesAsync_GetAll()
         {
