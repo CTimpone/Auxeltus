@@ -62,7 +62,7 @@ namespace Auxeltus.Api
 
                 if (response.Success)
                 {
-                    return StatusCode(201);
+                    return Created(new Uri($"/roles/{response.Content.Id}", UriKind.Relative), response);
                 }
                 else
                 {

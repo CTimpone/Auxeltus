@@ -38,11 +38,11 @@ namespace Auxeltus.Api
 
             try
             {
-                await _roleCommand.CreateRoleAsync(MapToRoleEntity(newRole)).ConfigureAwait(false);
+                RoleEntity entity = await _roleCommand.CreateRoleAsync(MapToRoleEntity(newRole)).ConfigureAwait(false);
 
                 response.Success = true;
-
-                return response;   
+                response.Content = MapRoleEntity(entity);
+                return response;
             }
             catch (Exception ex)
             {
