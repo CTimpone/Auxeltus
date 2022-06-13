@@ -24,7 +24,7 @@ namespace Auxeltus.AccessLayer.Sql
         /// Adds a new <c>Role</c> to the data structure.
         /// Input object should not include an Id (as it is auto-generated as the primary key).
         /// </summary>
-        public async Task CreateRoleAsync(RoleEntity role)
+        public async Task<RoleEntity> CreateRoleAsync(RoleEntity role)
         {
             try
             {
@@ -33,6 +33,8 @@ namespace Auxeltus.AccessLayer.Sql
                     .ConfigureAwait(false);
 
                 await _context.SaveChangesAsync().ConfigureAwait(false);
+
+                return role;
 
             }
             catch (Exception ex)

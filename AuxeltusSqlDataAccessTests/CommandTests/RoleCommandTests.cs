@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AuxeltusSqlDataAccessTests.CommandTests
+namespace AuxeltusSqlDataAccessTests
 {
     [TestClass]
     public class RoleCommandTests: TestBase
@@ -44,11 +44,12 @@ namespace AuxeltusSqlDataAccessTests.CommandTests
                 Tier = rnd.Next(1, 10)
             };
 
-            await command.CreateRoleAsync(newRole);
+            RoleEntity returned = await command.CreateRoleAsync(newRole).ConfigureAwait(false);
 
             RoleEntity addedRole = context.Roles.First(r => r.Title == newRole.Title);
 
             Assert.IsNotNull(addedRole.Id);
+            Assert.AreEqual(addedRole.Id, returned.Id);
             CompareRoles(newRole, addedRole);
         }
 

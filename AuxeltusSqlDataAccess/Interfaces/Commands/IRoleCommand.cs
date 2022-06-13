@@ -11,7 +11,7 @@ namespace Auxeltus.AccessLayer.Sql
         /// Adds a new <c>Role</c> to the data structure.
         /// Input object should not include an Id (as it is auto-generated as the primary key).
         /// </summary>
-        public Task CreateRoleAsync(RoleEntity role);
+        public Task<RoleEntity> CreateRoleAsync(RoleEntity role);
 
         /// <summary>
         /// Updates an existing <c>Role</c> on the data structure.

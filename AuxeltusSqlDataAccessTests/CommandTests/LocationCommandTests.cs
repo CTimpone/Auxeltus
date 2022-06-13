@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AuxeltusSqlDataAccessTests.CommandTests
+namespace AuxeltusSqlDataAccessTests
 {
     [TestClass]
     public class LocationCommandTests: TestBase
