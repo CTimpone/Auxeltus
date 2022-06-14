@@ -42,7 +42,10 @@ namespace Auxeltus.Api
             services.AddTransient<IRoleCommand, RoleCommand>();
             services.AddTransient<IRoleQuery, RoleQuery>();
 
-            services.AddControllers()
+            services.AddControllers(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new PatchFromBodyModelBinderProvider());
+                })
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;

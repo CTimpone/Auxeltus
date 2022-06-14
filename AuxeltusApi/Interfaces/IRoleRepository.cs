@@ -9,7 +9,7 @@ namespace Auxeltus.Api.Interfaces
         public Task<AuxeltusObjectResponse<List<Role>>> RetrieveRolesAsync(int? maxReturn, int? startIndex);
         public Task<AuxeltusObjectResponse<Role>> RetrieveRoleAsync(int roleId);
         public Task<AuxeltusObjectResponse<Role>> CreateRoleAsync(Role newRole);
-        public Task<AuxeltusObjectResponse<Role>> UpdateRoleAsync(int roleId, Role role);
+        public Task<AuxeltusObjectResponse<Role>> UpdateRoleAsync(int roleId, RolePatch role);
         public Task<AuxeltusObjectResponse> DeleteRoleAsync(int roleId);
     }
 }

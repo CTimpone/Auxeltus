@@ -4,9 +4,9 @@ using Auxeltus.Api.Interfaces;
 using Auxeltus.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Auxeltus.Api
@@ -84,6 +84,7 @@ namespace Auxeltus.Api
         [Route("new")]
         public async Task<IActionResult> Create([FromBody] Role role)
         {
+            var req = Request;
             try
             {
                 var response = await _repository.CreateRoleAsync(role).ConfigureAwait(false);
@@ -108,9 +109,26 @@ namespace Auxeltus.Api
 
         [HttpPatch]
         [Route("{id}/update")]
-        public IActionResult Update()
+        public async Task<IActionResult> Update([FromRoute] int id, [PatchFromBody] RolePatch role)
         {
-            return new NoContentResult();
+            try
+            {
+                var response = await _repository.UpdateRoleAsync(id, role).ConfigureAwait(false);
+
+                if (response.Success)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return new BadRequestObjectResult(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception thrown in {nameof(RoleController)}.{nameof(Create)}");
+                return StatusCode(500);
+            }
         }
 
         [HttpDelete]

@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Auxeltus.Api.Attributes
 {
@@ -43,7 +41,8 @@ namespace Auxeltus.Api.Attributes
             //To be further refined
             if (error.Contains("required", StringComparison.OrdinalIgnoreCase)) {
                 return ErrorConstants.REQUIRED_CODE;
-            } else
+            } 
+            else
             {
                 return ErrorConstants.MODEL_VALIDATION_CODE;
             }
