@@ -111,22 +111,22 @@ namespace Auxeltus.Api
             {
                 RoleEntity internalRole = await _roleQuery.RetrieveRoleAsync(roleId).ConfigureAwait(false);
 
-                if (role.TitleSpecified)
+                if (role.PropertySpecified(nameof(role.Title)))
                 {
                     internalRole.Title = role.Title;
                 }
 
-                if (role.TierSpecified)
+                if (role.PropertySpecified(nameof(role.Tier)))
                 {
                     internalRole.Tier = role.Tier;
                 }
 
-                if (role.MaximumSalarySpecified)
+                if (role.PropertySpecified(nameof(role.MaximumSalary)))
                 {
                     internalRole.MaximumSalary = role.MaximumSalary;
                 }
 
-                if (role.MinimumSalarySpecified)
+                if (role.PropertySpecified(nameof(role.MinimumSalary)))
                 {
                     internalRole.MinimumSalary = role.MinimumSalary;
                 }
