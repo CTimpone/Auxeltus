@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Auxeltus.Api
@@ -126,16 +127,38 @@ namespace Auxeltus.Api
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception thrown in {nameof(RoleController)}.{nameof(Create)}");
+                _logger.LogError(ex, $"Exception thrown in {nameof(RoleController)}.{nameof(Update)}");
                 return StatusCode(500);
             }
         }
 
         [HttpDelete]
         [Route("{id}/delete")]
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            return new NoContentResult();
+            try
+            {
+                var response = await _repository.DeleteRoleAsync(id).ConfigureAwait(false);
+
+                if (response.Success)
+                {
+                    return NoContent();
+                }
+                else if (response.Errors.All(e => e.Code == ErrorConstants.NOT_FOUND_CODE))
+                {
+                    return new NotFoundResult();
+                }
+                else
+                {
+                    return new BadRequestObjectResult(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception thrown in {nameof(RoleController)}.{nameof(Delete)}");
+                return StatusCode(500);
+            }
+
         }
 
     }

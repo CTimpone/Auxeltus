@@ -122,7 +122,7 @@ namespace AuxeltusSqlDataAccessTests
             {
                 await command.DeleteRoleAsync(initialCount + 100);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Assert.AreEqual(initialCount, context.Roles.Count());
                 throw;

@@ -62,7 +62,30 @@ namespace Auxeltus.Api
 
         public async Task<AuxeltusObjectResponse> DeleteRoleAsync(int roleId)
         {
-            throw new System.NotImplementedException();
+            var response = new AuxeltusObjectResponse();
+            
+            try
+            {
+                await _roleCommand.DeleteRoleAsync(roleId).ConfigureAwait(false);
+
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Contains(ErrorConstants.NO_MATCHES))
+                {
+                    _logger.LogError(ex, $"No matching record to delete found in {nameof(RoleRepository)}.{nameof(DeleteRoleAsync)}");
+
+                    response.AddError(ErrorType.Error, ErrorConstants.NOT_FOUND_CODE,
+                        $"No role found with given '{nameof(Role.Id)}'", nameof(Role.Id));
+
+                    return response;
+                }
+
+                throw;
+            }
         }
 
         public async Task<AuxeltusObjectResponse<Role>> RetrieveRoleAsync(int roleId)
