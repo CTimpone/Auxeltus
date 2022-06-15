@@ -6,8 +6,8 @@ namespace Auxeltus.Api.Models
 {
     public class RolePatch: PatchBase, IValidatableObject
     {
-        [MinLength(1)]
-        [MaxLength(100)]
+        [MinLength(2, ErrorMessage = "Title must be at least two (2) characters long.")]
+        [MaxLength(100, ErrorMessage = "Title must not exceed one hundred (100) characters.")]
         public string Title
         {
             get
@@ -20,7 +20,7 @@ namespace Auxeltus.Api.Models
             }
         }
 
-        [Range(0, int.MaxValue)]
+        [Range(0, int.MaxValue, ErrorMessage = "Tier must be a non-negative integer.")]
         public int? Tier
         {
             get
@@ -61,7 +61,7 @@ namespace Auxeltus.Api.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Title == null && PropertySpecified(nameof(Title)))
+            if (string.IsNullOrEmpty(Title) && PropertySpecified(nameof(Title)))
             {
                 yield return new ValidationResult(
                     $"The {nameof(Title)} field must not be null if submitted.",

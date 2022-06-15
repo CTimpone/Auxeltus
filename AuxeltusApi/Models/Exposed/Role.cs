@@ -7,12 +7,12 @@ namespace Auxeltus.Api.Models
         public int? Id { get; set; }
 
         [Required]
-        [MinLength(1)]
-        [MaxLength(100)]
+        [MinLength(2, ErrorMessage = "Title must be at least two (2) characters long.")]
+        [MaxLength(100, ErrorMessage = "Title must not exceed one hundred (100) characters.")]
         public string Title { get; set; }
 
         [Required]
-        [Range(0, int.MaxValue)]
+        [Range(0, int.MaxValue, ErrorMessage = "Tier must be a non-negative integer.")]
         public int? Tier { get; set; }
 
         [Required]
