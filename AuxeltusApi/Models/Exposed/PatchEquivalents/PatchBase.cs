@@ -6,7 +6,7 @@ namespace Auxeltus.Api.Models
 {
     public class PatchBase
     {
-        private Dictionary<string, object> _specifiedProperties;
+        private Dictionary<string, object> _specifiedProperties = new Dictionary<string, object>();
 
         public bool PropertySpecified(string propName)
         {
@@ -20,7 +20,7 @@ namespace Auxeltus.Api.Models
 
         protected T ObtainValue<T>(string propName)
         {
-            return (T) _specifiedProperties[propName] ?? default;
+            return (T) (_specifiedProperties.ContainsKey(propName) ? _specifiedProperties[propName] : default);
         }
     }
 }
