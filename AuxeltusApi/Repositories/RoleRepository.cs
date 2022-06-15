@@ -154,12 +154,12 @@ namespace Auxeltus.Api
             }
         }
 
-        private List<Role> MapRoleEntities(List<RoleEntity> internalRoles)
+        internal List<Role> MapRoleEntities(List<RoleEntity> internalRoles)
         {
             return internalRoles.Select(r => MapRoleEntity(r)).ToList();
         }
 
-        private Role MapRoleEntity(RoleEntity internalRole)
+        internal Role MapRoleEntity(RoleEntity internalRole)
         {
             return new Role
             {
@@ -171,7 +171,7 @@ namespace Auxeltus.Api
             };
         }
 
-        private RoleEntity MapToRoleEntity(Role role)
+        internal RoleEntity MapToRoleEntity(Role role)
         {
             return new RoleEntity
             {
