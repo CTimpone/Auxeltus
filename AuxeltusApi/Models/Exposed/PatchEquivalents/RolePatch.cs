@@ -4,106 +4,85 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Auxeltus.Api.Models
 {
-    public class RolePatch: IValidatableObject
+    public class RolePatch: PatchBase, IValidatableObject
     {
-        internal bool TitleSpecified;
-
-        internal bool TierSpecified;
-
-        internal bool MaximumSalarySpecified;
-
-        internal bool MinimumSalarySpecified;
-
-        private string _title;
-        private int? _tier;
-        private int? _maxSalary;
-        private int? _minSalary;
-
         [MinLength(1)]
         [MaxLength(100)]
-        [BindProperty]
         public string Title
         {
             get
             {
-                return _title;
+                return ObtainValue<string>(nameof(Title));
             }
             set
             {
-                TitleSpecified = true;
-                _title = value;
+                SpecifyProperty(nameof(Title), value);
             }
         }
 
         [Range(0, int.MaxValue)]
-        [BindProperty]
         public int? Tier
         {
             get
             {
-                return _tier;
+                return ObtainValue<int?>(nameof(Tier));
             }
             set
             {
-                TierSpecified = true;
-                _tier = value;
+                SpecifyProperty(nameof(Tier), value);
             }
         }
 
         [Range(0, int.MaxValue, ErrorMessage = "MaximumSalary must be a non-negative integer.")]
-        [BindProperty]
         public int? MaximumSalary
         {
             get
             {
-                return _maxSalary;
+                return ObtainValue<int?>(nameof(MaximumSalary));
             }
             set
             {
-                MaximumSalarySpecified = true;
-                _maxSalary = value;
+                SpecifyProperty(nameof(MaximumSalary), value);
             }
         }
 
         [Range(0, int.MaxValue, ErrorMessage = "MinimumSalary must be a non-negative integer.")]
-        [BindProperty]
         public int? MinimumSalary
         {
             get
             {
-                return _minSalary;
+                return ObtainValue<int?>(nameof(MinimumSalary));
             }
             set
             {
-                MinimumSalarySpecified = true;
-                _minSalary = value;
+                SpecifyProperty(nameof(MinimumSalary), value);
             }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Title == null && TitleSpecified)
+            if (Title == null && PropertySpecified(nameof(Title)))
             {
                 yield return new ValidationResult(
                     $"The {nameof(Title)} field must not be null if submitted.",
                     new[] { nameof(Title) });
             }
 
-            if (Tier == null && TierSpecified)
+            if (Tier == null && PropertySpecified(nameof(Tier)))
             {
                 yield return new ValidationResult(
                     $"The {nameof(Tier)} field must not be null if submitted.",
                     new[] { nameof(Tier) });
             }
 
-            if (MaximumSalary == null && MaximumSalarySpecified)
+            if (MaximumSalary == null && PropertySpecified(nameof(MaximumSalary)))
             {
                 yield return new ValidationResult(
                     $"The {nameof(MaximumSalary)} field must not be null if submitted.",
                     new[] { nameof(MaximumSalary) });
             }
 
-            if (MinimumSalary == null && MinimumSalarySpecified)
+            if (MinimumSalary == null && PropertySpecified(nameof(MinimumSalary)))
             {
                 yield return new ValidationResult(
                     $"The {nameof(MinimumSalary)} field must not be null if submitted.",
